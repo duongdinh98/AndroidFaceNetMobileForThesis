@@ -16,6 +16,7 @@
 
 package org.tensorflow.lite.examples.detection;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -137,6 +138,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   //private HashMap<String, Classifier.Recognition> knownFaces = new HashMap<>();
   private boolean isRegistration = false;
   private int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
+  private int THRESHOLD_FOR_DENYING_RESULT = 6;
   private int numOfTimeRecognized = 0;
   private int numOfTimeNotRecognized = 0;
 
@@ -170,6 +172,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   }
 
+  @SuppressLint("RestrictedApi")
   @Override
   public synchronized void onResume() {
     super.onResume();
@@ -179,6 +182,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     Intent intent = getIntent();
     boolean mode = intent.getBooleanExtra("Mode", false);
     isRegistration = mode;
+    if(!isRegistration) {
+      fabAdd.setVisibility(View.INVISIBLE);
+    }
   }
 
   private void onAddClick() {
@@ -596,7 +602,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     (int) faceBB.height());
 
             moveToCheckAndSendAPI(label, confidence, cropImageForSendAPI);
-          } else if (numOfTimeNotRecognized >= THRESHOLD_FOR_ACCEPTING_RESULT && !isRegistration) {
+          } else if (numOfTimeNotRecognized >= THRESHOLD_FOR_DENYING_RESULT && !isRegistration) {
             moveToFaceNotRecognized();
           }
 

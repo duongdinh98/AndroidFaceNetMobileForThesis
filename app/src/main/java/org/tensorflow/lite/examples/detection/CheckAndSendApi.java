@@ -9,12 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CheckAndSendApi extends AppCompatActivity {
     TextView name;
     TextView distance;
     ImageView face;
-    Button btn_try_again;
+    Button btn_try_again, btn_save_send_api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,7 @@ public class CheckAndSendApi extends AppCompatActivity {
         distance = findViewById(R.id.txt_distance);
         face = findViewById(R.id.img_face_cropped);
         btn_try_again = findViewById(R.id.btn_try_again);
+        btn_save_send_api = findViewById(R.id.btn_save_send_api);
 
         btn_try_again.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,5 +57,10 @@ public class CheckAndSendApi extends AppCompatActivity {
 
         name.setText(nameI);
         distance.setText(String.valueOf(distanceI));
+
+        btn_save_send_api.setOnClickListener(view -> {
+            SaveDataSet.saveBitmapToStorage(faceI, nameI + ".png");
+            Toast.makeText(CheckAndSendApi.this, "Saved data", Toast.LENGTH_SHORT).show();
+        });
     }
 }

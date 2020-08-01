@@ -1,9 +1,11 @@
 package org.tensorflow.lite.examples.detection;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +22,7 @@ public class ScreenSplash extends AppCompatActivity {
     private String convertArrToString(float[] emb) {
         String embArr = "";
         for (float feature : emb) {
-            embArr = embArr + feature + "-";
+            embArr = embArr + feature + "*";
         }
 
         return embArr;
@@ -34,7 +36,14 @@ public class ScreenSplash extends AppCompatActivity {
         Button btn_recognize = findViewById(R.id.btn_recognize);
         Button btn_register = findViewById(R.id.btn_register);
         TextView txt_check_hash_map = findViewById(R.id.txt_check_hash_map);
+        ImageView splash_img = findViewById(R.id.splash_img);
 
+        Bitmap image = SaveDataSet.readBitmapFromStorage("Black Obama3.png");
+        if(image == null) {
+            splash_img.setImageResource(R.drawable.ic_launcher);
+        } else {
+            splash_img.setImageBitmap(image);
+        }
         HashMap<String, float[]> registered = SaveDataSet.deSerializeHashMap();
         if(registered != null) {
             String text = "";
@@ -52,6 +61,7 @@ public class ScreenSplash extends AppCompatActivity {
         btn_recognize.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Enter Recognition mode !",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(ScreenSplash.this, DetectorActivity.class);
+            intent.putExtra("Mode", false);
             startActivity(intent);
         });
 
