@@ -22,7 +22,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -34,7 +33,6 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,8 +41,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -57,6 +53,9 @@ import com.google.mlkit.vision.face.FaceDetectorOptions;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.tensorflow.lite.examples.detection.Models.FaceIdRegistration;
+import org.tensorflow.lite.examples.detection.Models.Result;
 import org.tensorflow.lite.examples.detection.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -66,6 +65,11 @@ import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 import org.tensorflow.lite.examples.detection.tflite.SimilarityClassifier;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import org.tensorflow.lite.examples.detection.tracking.MultiBoxTracker;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
@@ -416,11 +420,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     View dialogLayout = inflater.inflate(R.layout.image_edit_dialog, null);
     ImageView ivFace = dialogLayout.findViewById(R.id.dlg_image);
     TextView tvTitle = dialogLayout.findViewById(R.id.dlg_title);
-    EditText etName = dialogLayout.findViewById(R.id.dlg_input);
+    EditText dlg_input_idLearner = dialogLayout.findViewById(R.id.dlg_input_idLearner);
+    EditText etName = dialogLayout.findViewById(R.id.dlg_input_name);
 
-    tvTitle.setText("Add Face");
+    tvTitle.setText("Add new FaceID");
     ivFace.setImageBitmap(rec.getCrop());
     etName.setHint("Input name");
+    dlg_input_idLearner.setHint("Input ID learner");
 
     builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
       @Override
@@ -428,10 +434,18 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
 
           String name = etName.getText().toString();
-          if (name.isEmpty()) {
+          String id = dlg_input_idLearner.getText().toString();
+          if (name.isEmpty() || id.isEmpty()) {
               return;
           }
           detector.register(name, rec);
+
+          //Get embedding stored in Extra
+          final float[] emb = ((float[][]) rec.getExtra())[0];
+          String embeddingString = convertArrEmbToString(emb);
+
+          postRegistrationAPI(id, name, embeddingString);
+
           //knownFaces.put(name, rec);
           dlg.dismiss();
       }
@@ -454,6 +468,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
        SimilarityClassifier.Recognition rec = mappedRecognitions.get(0);
        if (rec.getExtra() != null) {
          showAddFaceDialog(rec);
+//         goToRegistration(rec);
        }
 
     }
@@ -680,5 +695,45 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   public void moveToFaceNotRecognized() {
     Intent intent = new Intent(DetectorActivity.this, FaceNotRecognized.class);
     startActivity(intent);
+  }
+
+  private void goToRegistration(SimilarityClassifier.Recognition rec) {
+    Intent intent = new Intent(DetectorActivity.this, RegisterFaceId.class);
+    startActivity(intent);
+  }
+
+  private void postRegistrationAPI(String idLearner, String name, String embedding) {
+//    String idLearner = input_idLearner.getText().toString().trim();
+//    String name = input_name.getText().toString().trim();
+//    String embedding = input_embedding.getText().toString().trim();
+
+    FaceIdRegistration faceIdData  = new FaceIdRegistration(idLearner, name, embedding);
+
+    Retrofit retrofit = APIClient.getClient();
+
+    APIService callApi = retrofit.create(APIService.class);
+
+    Call<Result> call = callApi.register(faceIdData);
+
+    call.enqueue(new Callback<Result>() {
+      @Override
+      public void onResponse(Call<Result> call, Response<Result> response) {
+        Toast.makeText(DetectorActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onFailure(Call<Result> call, Throwable t) {
+        Toast.makeText(DetectorActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  private String convertArrEmbToString(float[] emb) {
+    String embArr = "";
+    for (float feature : emb) {
+      embArr = embArr + feature + "&";
+    }
+
+    return embArr;
   }
 }

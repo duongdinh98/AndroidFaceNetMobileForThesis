@@ -18,34 +18,34 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class SaveDataSet {
-    public static void serializeHashMap(String name, float[] emb) {
-        FileOutputStream fstream;
-        HashMap<String, float[]> dataSet = new HashMap<>();
-        dataSet.put(name, emb);
-        try
-        {
-            String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root, "/LearnerDrivingCentre/EmbeddingsDetail");
-            if (!myDir.exists()) {
-                myDir.mkdirs();
-            }
-            File myFile = new File(myDir,"face_feature_details.ser");
-
-            fstream = new FileOutputStream(myFile);
-            ObjectOutputStream oos = new ObjectOutputStream(fstream);
-            oos.writeObject(dataSet);
-            oos.close();
-            fstream.close();
-
-            Log.d("duong", "face_feature_details.ser saved");
-        }catch(IOException ioe)
-        {
-            ioe.printStackTrace();
-        }
-    }
+//    public static void serializeHashMap(String name, float[] emb) {
+//        FileOutputStream fstream;
+//        HashMap<String, float[]> dataSet = new HashMap<>();
+//        dataSet.put(name, emb);
+//        try
+//        {
+//            String root = Environment.getExternalStorageDirectory().toString();
+//            File myDir = new File(root, "/LearnerDrivingCentre/EmbeddingsDetail");
+//            if (!myDir.exists()) {
+//                myDir.mkdirs();
+//            }
+//            File myFile = new File(myDir,"face_feature_details.ser");
+//
+//            fstream = new FileOutputStream(myFile);
+//            ObjectOutputStream oos = new ObjectOutputStream(fstream);
+//            oos.writeObject(dataSet);
+//            oos.close();
+//            fstream.close();
+//
+//            Log.d("duong", "face_feature_details.ser saved");
+//        }catch(IOException ioe)
+//        {
+//            ioe.printStackTrace();
+//        }
+//    }
 
     public static HashMap<String, float[]> deSerializeHashMap() {
-        HashMap<String, float[]> loadedData = null;
+        HashMap<String, float[]> loadedData = new HashMap<>();
         FileInputStream fstream;
 
         try {
@@ -97,5 +97,29 @@ public class SaveDataSet {
         }
 
         return image;
+    }
+
+    public static void serializeHashMap(HashMap<String, float[]> dataSet) {
+        FileOutputStream fstream;
+        try
+        {
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root, "/LearnerDrivingCentre/EmbeddingsDetail");
+            if (!myDir.exists()) {
+                myDir.mkdirs();
+            }
+            File myFile = new File(myDir,"face_feature_details.ser");
+
+            fstream = new FileOutputStream(myFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fstream);
+            oos.writeObject(dataSet);
+            oos.close();
+            fstream.close();
+
+            Log.d("duong", "face_feature_details.ser saved");
+        }catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
     }
 }

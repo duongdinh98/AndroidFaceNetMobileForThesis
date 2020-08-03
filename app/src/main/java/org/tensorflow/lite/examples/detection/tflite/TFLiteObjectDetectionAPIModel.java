@@ -100,31 +100,33 @@ public class TFLiteObjectDetectionAPIModel
 
   public void reloadDataSet(HashMap<String, float[]> data){
     if(data != null) {
-      String name = "unknown";
-      float[] emb = null;
-
-      Set<String> keySet = data.keySet();
-      for (String key : keySet) {
-        name = key;
-        emb = data.get(key);
-      }
-
-      this.registered.put(name, emb);
+//      String name = "unknown";
+//      float[] emb = null;
+//
+//      Set<String> keySet = data.keySet();
+//      for (String key : keySet) {
+//        name = key;
+//        emb = data.get(key);
+//      }
+//
+//      this.registered.put(name, emb);
+      this.registered = data;
     }
   }
 
   public void register(String name, Recognition rec) {
       final float[] emb = ((float[][]) rec.getExtra())[0];
       registered.put(name, emb);
+      Log.d("duong", "Num of demension: " + emb.length);
 
       String embArr = "";
     for (float feature : emb) {
-      embArr = embArr + feature + "-";
+      embArr = embArr + feature + "*";
     }
 
       Log.d("duong", embArr);
 
-      SaveDataSet.serializeHashMap(name, emb);
+//      SaveDataSet.serializeHashMap(name, emb);
       Log.d("duong", "Registered: Ten: " + name + " Recognition: " + rec);
   }
 

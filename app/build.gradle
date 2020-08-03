@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'de.undercouch.download'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "org.tensorflow.lite.examples.facerecognition"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -52,5 +52,9 @@ dependencies {
 
     // added MLKit dependencies for face detector
     implementation 'com.google.mlkit:face-detection:16.0.0'
+
+    // Retrofit for calling NodeJS Rest API
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 }
