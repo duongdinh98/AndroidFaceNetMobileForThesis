@@ -15,7 +15,7 @@ public class FaceIdDetails {
     private String embedding;
     @SerializedName("id")
     @Expose
-    private Object id;
+    private String id;
 
     public String getIdLearner() {
         return idLearner;
@@ -41,11 +41,11 @@ public class FaceIdDetails {
         this.embedding = embedding;
     }
 
-    public Object getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Object id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

@@ -1,5 +1,7 @@
 package org.tensorflow.lite.examples.detection;
 
+import org.tensorflow.lite.examples.detection.Models.CheckInResults;
+import org.tensorflow.lite.examples.detection.Models.CheckOutResults;
 import org.tensorflow.lite.examples.detection.Models.FaceIdRegistration;
 import org.tensorflow.lite.examples.detection.Models.Result;
 import org.tensorflow.lite.examples.detection.Models.ResultAllEmbeddings;
@@ -10,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
@@ -22,9 +25,15 @@ public interface APIService {
 
     @Multipart
     @POST("/api/v1/attendance")
-    Call<Result> attendance(
+    Call<CheckInResults> doCheckIn(
             @Part("idLearner") RequestBody idLearner,
-            @Part("name") RequestBody name,
-            @Part MultipartBody.Part image,
-            @Part("attemptAt") RequestBody attemptAt);
+            @Part MultipartBody.Part imageCheckIn,
+            @Part("checkInAt") RequestBody checkInAt);
+
+    @Multipart
+    @PATCH("/api/v1/attendance")
+    Call<CheckOutResults> doCheckOut(
+            @Part("id") RequestBody id,
+            @Part("checkOutAt") RequestBody checkOutAt,
+            @Part MultipartBody.Part imageCheckIn);
 }

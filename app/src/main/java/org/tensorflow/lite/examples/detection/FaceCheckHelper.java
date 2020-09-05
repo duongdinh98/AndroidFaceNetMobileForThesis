@@ -1,4 +1,4 @@
-package com.example.databasecheckout;
+package org.tensorflow.lite.examples.detection;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package com.zwp.mobilefacenet;
+package org.tensorflow.lite.examples.detection;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Rect;
-
-import com.zwp.mobilefacenet.mtcnn.Box;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -174,18 +172,18 @@ public class MyUtil {
      * @param size
      * return
      */
-    public static float[][][] cropAndResize(Bitmap bitmap, Box box, int size) {
-        // crop and resize
-        Matrix matrix = new Matrix();
-        float scaleW = 1.0f * size / box.width();
-        float scaleH = 1.0f * size / box.height();
-        matrix.postScale(scaleW, scaleH);
-        Rect rect = box.transform2Rect();
-        Bitmap croped = Bitmap.createBitmap(
-                bitmap, rect.left, rect.top, box.width(), box.height(), matrix, true);
-
-        return normalizeImage(croped);
-    }
+//    public static float[][][] cropAndResize(Bitmap bitmap, Box box, int size) {
+//        // crop and resize
+//        Matrix matrix = new Matrix();
+//        float scaleW = 1.0f * size / box.width();
+//        float scaleH = 1.0f * size / box.height();
+//        matrix.postScale(scaleW, scaleH);
+//        Rect rect = box.transform2Rect();
+//        Bitmap croped = Bitmap.createBitmap(
+//                bitmap, rect.left, rect.top, box.width(), box.height(), matrix, true);
+//
+//        return normalizeImage(croped);
+//    }
 
     /**
      * 按照rect的大小裁剪出人脸

@@ -50,6 +50,7 @@ import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -590,7 +591,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           if (conf < 1.0f && !isRegistration) {
             numOfTimeRecognized ++;
             confidence = conf;
-            label = result.getTitle() + numOfTimeRecognized;
+            label = result.getTitle();
             if (result.getId().equals("0")) {
               color = Color.GREEN;
             }
@@ -684,11 +685,17 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   }
 
   public void moveToCheckAndSendAPI(String name, float distance, Bitmap faceDetected) {
-    faceDetected = Bitmap.createScaledBitmap(faceDetected, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, false);
+//    faceDetected = Bitmap.createScaledBitmap(faceDetected, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, false);
     Intent intent = new Intent(DetectorActivity.this, CheckAndSendApi.class);
     intent.putExtra("NameDetected", name);
     intent.putExtra("ConfidenceDetected", distance);
-    intent.putExtra("FaceDetected", faceDetected);
+//    intent.putExtra("FaceDetected", faceDetected);
+
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    faceDetected.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    byte[] bytes = stream.toByteArray();
+    intent.putExtra("FaceDetected",bytes);
+
     startActivity(intent);
   }
 

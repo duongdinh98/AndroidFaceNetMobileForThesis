@@ -1,7 +1,10 @@
 package org.tensorflow.lite.examples.detection;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.tensorflow.lite.examples.detection.Models.FaceIdDetails;
 import org.tensorflow.lite.examples.detection.Models.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.tflite.FaceAntiSpoofing;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ScreenSplash extends AppCompatActivity {
+    FaceCheckHelper faceCheckHelper;
 
     private String convertArrToString(float[] emb) {
         String embArr = "";
@@ -37,16 +43,32 @@ public class ScreenSplash extends AppCompatActivity {
         return embArr;
     }
 
+    Button btnAnti;
+    private FaceAntiSpoofing fas;
+    TextView anitSpoofing;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
+        if (!hasPermission()) {
+            requestPermission();
+        }
+
+        try {
+            fas = new FaceAntiSpoofing(getAssets());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Button btn_recognize = findViewById(R.id.btn_recognize);
         Button btn_register = findViewById(R.id.btn_register);
         TextView txt_check_hash_map = findViewById(R.id.txt_check_hash_map);
         ImageView splash_img = findViewById(R.id.splash_img);
         Button btnGetLatestData = findViewById(R.id.btn_get_latest_data);
+        btnAnti = findViewById(R.id.btn_anti);
+        anitSpoofing = findViewById(R.id.anitSpoofing);
 
         Bitmap image = SaveDataSet.readBitmapFromStorage("Black Obama3.png");
         if(image == null) {
@@ -96,7 +118,7 @@ public class ScreenSplash extends AppCompatActivity {
                         HashMap<String, float[]> registeredData = new HashMap<>();
                         List<FaceIdDetails> data = response.body().getFaceIdData();
                         for (FaceIdDetails faceIdDetails : data) {
-                            String name = faceIdDetails.getName();
+                            String name = faceIdDetails.getName() + "&" + faceIdDetails.getId();
                             float[] embeddings = transferStringToEmbedding(faceIdDetails.getEmbedding());
 
                             registeredData.put(name, embeddings);
@@ -112,6 +134,17 @@ public class ScreenSplash extends AppCompatActivity {
                 }
             });
         });
+
+        btnAnti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap imgCheck = SaveDataSet.readBitmapFromStorage("imgCheck.jpg");
+                antiSpoofing(imgCheck);
+            }
+        });
+
+//        SQL LITE
+        initSQLite();
     }
 
     @Override
@@ -131,4 +164,62 @@ public class ScreenSplash extends AppCompatActivity {
 
         return arr;
     }
+
+    private boolean hasPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                    && (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        } else {
+            return true;
+        }
+    }
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 5360);
+        }
+    }
+
+    private void antiSpoofing(Bitmap bitmapCrop1) {
+        // Đánh giá độ rõ nét của hình ảnh trước khi phát hiện trực tiếp
+        int laplace1 = fas.laplacian(bitmapCrop1);
+
+        String text = "清晰度检测结果left：" + laplace1;
+
+        if (laplace1 < FaceAntiSpoofing.LAPLACIAN_THRESHOLD) {
+            text = text + "，" + "False";
+            anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        } else {
+            long start = System.currentTimeMillis();
+
+            // 活体检测
+            float score1 = fas.antiSpoofing(bitmapCrop1);
+
+            long end = System.currentTimeMillis();
+
+            text = "活体检测结果left：" + score1;
+            if (score1 < FaceAntiSpoofing.THRESHOLD) {
+                text = text + "，" + "True";
+                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+            } else {
+                text = text + "，" + "False";
+                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+            }
+            text = text + "。耗时" + (end - start);
+        }
+        anitSpoofing.setText(text);
+    }
+    private void initSQLite() {
+        // Create database
+        faceCheckHelper = new FaceCheckHelper(ScreenSplash.this, "lcd_data.sqlite", null, 1);
+
+        // Create table
+        String create_attendance_table_sql = "CREATE TABLE IF NOT EXISTS attendance (\n" +
+                "\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                " \tidCheckIn TEXT,\n" +
+                " \tidLeaner TEXT\n" +
+                ")";
+        faceCheckHelper.queryData(create_attendance_table_sql);
+    }
+
 }

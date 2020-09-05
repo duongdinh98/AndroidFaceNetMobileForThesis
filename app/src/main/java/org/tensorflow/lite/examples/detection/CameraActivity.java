@@ -42,6 +42,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.View;
@@ -260,8 +261,14 @@ public abstract class CameraActivity extends AppCompatActivity
         Camera.Size previewSize = camera.getParameters().getPreviewSize();
         previewHeight = previewSize.height;
         previewWidth = previewSize.width;
-        rgbBytes = new int[previewWidth * previewHeight];
-        onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
+//        rgbBytes = new int[previewWidth * previewHeight];
+//        onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
+          rgbBytes = new int[previewWidth * previewHeight];
+          int rotation = 90;
+          if (useFacing == CameraCharacteristics.LENS_FACING_FRONT) {
+              rotation = 270;
+          }
+          onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), rotation);
       }
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
@@ -517,6 +524,7 @@ public abstract class CameraActivity extends AppCompatActivity
         this.cameraId = chooseCamera();
 
         Fragment fragment;
+        Log.d("duong", "useCamera2API: " + useCamera2API);
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
                     CameraConnectionFragment.newInstance(

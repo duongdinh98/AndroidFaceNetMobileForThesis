@@ -233,7 +233,8 @@ public class CameraConnectionFragment extends Fragment {
 
     if (exactSizeFound) {
       LOGGER.i("Exact size match found.");
-      return desiredSize;
+      Size newRes = new Size(960, 720);
+      return newRes;
     }
 
     // Pick the smallest of those, assuming we found any
@@ -438,7 +439,7 @@ public class CameraConnectionFragment extends Fragment {
       // Create the reader for the preview frames.
       previewReader =
           ImageReader.newInstance(
-              previewSize.getWidth(), previewSize.getHeight(), ImageFormat.YUV_420_888, 2);
+              previewSize.getWidth(), previewSize.getHeight(), ImageFormat.NV21, 2);
 
       previewReader.setOnImageAvailableListener(imageListener, backgroundHandler);
       previewRequestBuilder.addTarget(previewReader.getSurface());

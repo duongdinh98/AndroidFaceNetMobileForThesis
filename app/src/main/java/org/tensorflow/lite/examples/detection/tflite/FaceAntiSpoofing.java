@@ -4,9 +4,8 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.zwp.mobilefacenet.MyUtil;
-
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.examples.detection.MyUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,12 +15,12 @@ public class FaceAntiSpoofing {
     private static final String MODEL_FILE = "FaceAntiSpoofing.tflite";
 
     public static final int INPUT_IMAGE_SIZE = 256; // 需要feed数据的placeholder的图片宽高
-    public static final float THRESHOLD = 0.2f; // 设置一个阙值，大于这个值认为是攻击
+    public static final float THRESHOLD = 1.0f; // 设置一个阙值，大于这个值认为是攻击
 
     public static final int ROUTE_INDEX = 6; // 训练时观察到的路由索引
 
     public static final int LAPLACE_THRESHOLD = 50; // 拉普拉斯采样阙值
-    public static final int LAPLACIAN_THRESHOLD = 1000; // 图片清晰度判断阙值
+    public static final int LAPLACIAN_THRESHOLD = 500; // 图片清晰度判断阙值
 
     private Interpreter interpreter;
 

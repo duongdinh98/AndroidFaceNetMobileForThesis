@@ -41,21 +41,21 @@
         android:id="@+id/btn_save_send_api"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:text="Ok_send_api_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_try_again"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_try_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:text="try again"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_save_send_api"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/btn_save_send_api" />
 
     <Button
         android:id="@+id/button3"
@@ -64,6 +64,58 @@
         android:text="do manually"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtAntiSpoof"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="Total time: -1"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_send_api"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_send_api" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_distance" />
+
+    <TextView
+        android:id="@+id/txtIdUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_distance" />
+
+    <Button
+        android:id="@+id/btnCheckIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#F57F17"
+        android:text="Check-in"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_send_api"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAntiSpoof" />
+
+    <Button
+        android:id="@+id/btnCheckOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#0D47A1"
+        android:text="Check-out"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_try_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAntiSpoof" />
+
+    <TextView
+        android:id="@+id/txt_total_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_send_api"
+        app:layout_constraintEnd_toStartOf="@+id/btnCheckOut"
+        app:layout_constraintStart_toEndOf="@+id/btnCheckIn"
+        app:layout_constraintTop_toBottomOf="@+id/txtAntiSpoof" />
 </androidx.constraintlayout.widget.ConstraintLayout>
