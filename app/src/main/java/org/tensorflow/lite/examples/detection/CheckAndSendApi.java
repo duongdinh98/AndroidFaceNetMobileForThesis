@@ -101,6 +101,9 @@ public class CheckAndSendApi extends AppCompatActivity {
         });
 
         btnCheckIn.setOnClickListener(view -> {
+            LoadingDialog loadingDialog = new LoadingDialog(CheckAndSendApi.this);
+            loadingDialog.startLoadingDialog();
+
             String idLearner = idUserI;
             String checkInAt = Calendar.getInstance().getTime().toString();
 
@@ -108,7 +111,7 @@ public class CheckAndSendApi extends AppCompatActivity {
             SaveDataSet.saveBitmapToStorage(faceI, fileName);
             Toast.makeText(CheckAndSendApi.this, "Saved data", Toast.LENGTH_SHORT).show();
 
-            sendCheckInAPI(idLearner, checkInAt, fileName);
+            sendCheckInAPI(idLearner, checkInAt, fileName, loadingDialog);
         });
 
         btnCheckOut.setOnClickListener(view -> {
@@ -116,6 +119,9 @@ public class CheckAndSendApi extends AppCompatActivity {
             Cursor cursor = faceCheckHelper.getData("SELECT * FROM attendance WHERE idLeaner='" + idUserI + "'");
 
             if((cursor != null) && (cursor.getCount() > 0)){
+                LoadingDialog loadingDialog = new LoadingDialog(CheckAndSendApi.this);
+                loadingDialog.startLoadingDialog();
+
                 String id = "";
                 while (cursor.moveToNext()) {
                     id = cursor.getString(1);
@@ -127,7 +133,7 @@ public class CheckAndSendApi extends AppCompatActivity {
                 SaveDataSet.saveBitmapToStorage(faceI, fileName);
                 Toast.makeText(CheckAndSendApi.this, "Saved data", Toast.LENGTH_SHORT).show();
 
-                sendCheckOutAPI(id, checkOutAt, fileName);
+                sendCheckOutAPI(id, checkOutAt, fileName, loadingDialog);
             } else {
                 Toast.makeText(CheckAndSendApi.this, nameI + " has not checked in before !", Toast.LENGTH_SHORT).show();
             }
@@ -199,7 +205,7 @@ public class CheckAndSendApi extends AppCompatActivity {
 //        txtAntiSpoof.setText(text);
     }
 
-    private void sendCheckInAPI(String id, String time, String imageFileName) {
+    private void sendCheckInAPI(String id, String time, String imageFileName, LoadingDialog loadingDialog) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
         File imageFile = new File(myDir,imageFileName);
@@ -230,17 +236,23 @@ public class CheckAndSendApi extends AppCompatActivity {
 
                     faceCheckHelper.queryData("INSERT INTO attendance (idLeaner, idCheckIn) VALUES ('" + id + "' ,'" + checkInId + "')");
                     Toast.makeText(CheckAndSendApi.this, "Save checkInId to SQLite", Toast.LENGTH_SHORT).show();
+                    loadingDialog.dismissLoadingDialog();
+                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this);
+                    successDialog.startSuccessDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<CheckInResults> call, Throwable t) {
                 Toast.makeText(CheckAndSendApi.this, "Failed check in !", Toast.LENGTH_SHORT).show();
+                loadingDialog.dismissLoadingDialog();
+                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
+                errorDialog.startErrorDialog();
             }
         });
     }
 
-    private void sendCheckOutAPI(String idCheckIn, String time, String imageFileName) {
+    private void sendCheckOutAPI(String idCheckIn, String time, String imageFileName, LoadingDialog loadingDialog) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
         File imageFile = new File(myDir,imageFileName);
@@ -264,19 +276,50 @@ public class CheckAndSendApi extends AppCompatActivity {
                 Toast.makeText(CheckAndSendApi.this, "Sent check out API", Toast.LENGTH_SHORT).show();
                 if(response.isSuccessful()) {
                     int totalTime = response.body().getTotalTime();
-                    txtTotalTime.setText("Total time: " + totalTime);
+                    txtTotalTime.setText("Total time: " + convertSecondToTime(totalTime));
 
                     FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
                     // Clear
                     faceCheckHelper.queryData("DELETE FROM attendance WHERE idCheckIn='" + idCheckIn + "'");
+                    loadingDialog.dismissLoadingDialog();
+                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this, totalTime);
+                    successDialog.startSuccessCheckOutDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<CheckOutResults> call, Throwable t) {
                 Toast.makeText(CheckAndSendApi.this, "Failed check out !", Toast.LENGTH_SHORT).show();
+                loadingDialog.dismissLoadingDialog();
+                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
+                errorDialog.startErrorDialog();
             }
         });
+    }
+
+    private  String convertSecondToTime(int seconds) {
+        int ss = seconds % 60;
+        int hh = seconds / 60;
+        int mm = hh % 60;
+        hh = hh / 60;
+
+        String hour = "";
+        String minute = "";
+        String second = "";
+
+        if(hh != 0) {
+            hour = hh + "giờ ";
+        }
+
+        if(mm != 0) {
+            minute = mm + "phút ";
+        }
+
+        if(ss != 0) {
+            second = ss + "giây";
+        }
+
+        return ( hour + minute + second);
     }
 }
 
