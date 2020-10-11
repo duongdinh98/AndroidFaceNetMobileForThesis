@@ -1,11 +1,13 @@
 package org.tensorflow.lite.examples.detection;
 
+import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    private static final String BASE_URL = "http://6301c7462e5a.ngrok.io";
+    private static final String BASE_URL = SaveDataSet.readApiUrl();
 
     private static Retrofit retrofit = null;
 

@@ -125,6 +125,8 @@ public class ScreenSplash extends AppCompatActivity {
                         }
                         SaveDataSet.serializeHashMap(registeredData);
                         Toast.makeText(ScreenSplash.this, "onResponse()", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ScreenSplash.this, "404 or something !", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -138,13 +140,14 @@ public class ScreenSplash extends AppCompatActivity {
         btnAnti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap imgCheck = SaveDataSet.readBitmapFromStorage("imgCheck.jpg");
-                antiSpoofing(imgCheck);
+//                Bitmap imgCheck = SaveDataSet.readBitmapFromStorage("imgCheck.jpg");
+//                antiSpoofing(imgCheck);
             }
         });
 
 //        SQL LITE
         initSQLite();
+        anitSpoofing.setText("*" + SaveDataSet.readApiUrl() + "*");
     }
 
     @Override

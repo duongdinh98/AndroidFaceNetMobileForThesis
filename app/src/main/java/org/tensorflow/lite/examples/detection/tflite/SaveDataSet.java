@@ -8,10 +8,12 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -121,5 +123,30 @@ public class SaveDataSet {
         {
             ioe.printStackTrace();
         }
+    }
+
+    public static String readApiUrl () {
+        String url = "";
+        try{
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root, "/LearnerDrivingCentre/Config");
+            File myFile = new File(myDir,"api_end_point.env");
+
+            StringBuilder text = new StringBuilder();
+            BufferedReader br = new BufferedReader(new FileReader(myFile));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+            }
+            br.close();
+
+            url = text.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 }

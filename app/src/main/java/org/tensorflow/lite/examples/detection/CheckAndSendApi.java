@@ -226,8 +226,8 @@ public class CheckAndSendApi extends AppCompatActivity {
         call.enqueue(new Callback<CheckInResults>() {
             @Override
             public void onResponse(Call<CheckInResults> call, Response<CheckInResults> response) {
-                Toast.makeText(CheckAndSendApi.this, "Sent check in API", Toast.LENGTH_SHORT).show();
                 if(response.isSuccessful()) {
+                    Toast.makeText(CheckAndSendApi.this, "Sent check in API", Toast.LENGTH_SHORT).show();
                     String checkInId = response.body().getId();
                     FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
 

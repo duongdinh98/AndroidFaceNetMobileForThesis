@@ -33,6 +33,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ import com.google.mlkit.vision.face.FaceDetectorOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,9 +145,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   //private HashMap<String, Classifier.Recognition> knownFaces = new HashMap<>();
   private boolean isRegistration = false;
   private int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
-  private int THRESHOLD_FOR_DENYING_RESULT = 6;
+  private int THRESHOLD_FOR_DENYING_RESULT = 3;
   private int numOfTimeRecognized = 0;
   private int numOfTimeNotRecognized = 0;
+  private int MINIMUM_WIDTH_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
+  private int MINIMUM_HEIGHT_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +224,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                       TF_OD_API_IS_QUANTIZED);
       //cropSize = TF_OD_API_INPUT_SIZE;
 
-      detector.reloadDataSet(SaveDataSet.deSerializeHashMap());
+      detector.reloadDataSet(isRegistration ? null : SaveDataSet.deSerializeHashMap());
 
     } catch (final IOException e) {
       e.printStackTrace();
@@ -335,11 +339,22 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                   updateResults(currTimestamp, new LinkedList<>());
                   return;
                 }
+
+                // Big face filter
+                List<Face> bigFaces = new ArrayList<>();
+
+                for (Face face : faces) {
+                  RectF faceBounding = new RectF(face.getBoundingBox());
+                  if(faceBounding.width() >= MINIMUM_WIDTH_FACE_SIZE_TO_PROCESS_PROM_MLKIT
+                          && faceBounding.height() >= MINIMUM_HEIGHT_FACE_SIZE_TO_PROCESS_PROM_MLKIT) {
+                    bigFaces.add(face);
+                  }
+                }
                 runInBackground(
                         new Runnable() {
                           @Override
                           public void run() {
-                            onFacesDetected(currTimestamp, faces, addPending);
+                            onFacesDetected(currTimestamp, bigFaces, addPending);
                             addPending = false;
                           }
                         });
@@ -474,15 +489,15 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     }
 
-    runOnUiThread(
-            new Runnable() {
-              @Override
-              public void run() {
-                showFrameInfo(previewWidth + "x" + previewHeight);
-                showCropInfo(croppedBitmap.getWidth() + "x" + croppedBitmap.getHeight());
-                showInference(lastProcessingTimeMs + "ms");
-              }
-            });
+//    runOnUiThread(
+//            new Runnable() {
+//              @Override
+//              public void run() {
+//                showFrameInfo(previewWidth + "x" + previewHeight);
+//                showCropInfo(croppedBitmap.getWidth() + "x" + croppedBitmap.getHeight());
+//                showInference(lastProcessingTimeMs + "ms");
+//              }
+//            });
 
   }
 
@@ -546,6 +561,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         // maps original coordinates to portrait coordinates
         RectF faceBB = new RectF(boundingBox);
         transform.mapRect(faceBB);
+
+        Log.d("duongi", "W: " + faceBB.width() + " H: " + faceBB.height());
 
         // translates portrait to origin and scales to fit input inference size
         //cv.drawRect(faceBB, paint);

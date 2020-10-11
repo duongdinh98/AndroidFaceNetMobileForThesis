@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="tfe_color_primary">#ffa800</color>
-    <color name="tfe_color_primary_dark">#ff6f00</color>
-    <color name="tfe_color_accent">#425066</color>
-
-    <color name="tfe_semi_transparent">#66000000</color>
+    <color name="colorPrimary">#f5f6f9</color>
+    <color name="colorPrimaryDark">#f5f6f9</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="statusBarChooseOptions">#3c6bfb</color>
+    <color name="profilePage">#027ad7</color>
+    <color name="btnBlue">#0039F1</color>
+    <color name="errorColor">#ff5f40</color>
+    <color name="timeTableColor">#000C5D</color>
+    <color name="nicePink">#F63EA5</color>
+    <color name="niceGreen">#59B358</color>
+    <color name="niceYellow">#f5a62e</color>
+    <color name="startGradient">#8a4ca8</color>
+    <color name="endGradient">#bc382c</color>
+    <color name="b1StartGra">#4e91fc</color>
+    <color name="b1EndGra">#54befb</color>
+    <color name="b2StartGra">#ea5b95</color>
+    <color name="b2EndGra">#f4a068</color>
+    <color name="blurWhite">#f5f6f9</color>
+    <color name="b4StartGra">#f6a72e</color>
+    <color name="login">#027ad7</color>
+    <color name="success">#7fe870</color>
+    <color name="error">#CB3E21</color>
 </resources>
