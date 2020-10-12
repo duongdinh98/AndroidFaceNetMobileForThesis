@@ -1,12 +1,14 @@
-package org.tensorflow.lite.examples.detection.Models;
+package org.tensorflow.lite.examples.detection.response;
 
-public class Result {
+public class CheckOutResponse {
     private String status;
     private String message;
+    private int totalTime;
 
-    public Result(String status, String message) {
+    public CheckOutResponse(String status, String message, int totalTime) {
         this.status = status;
         this.message = message;
+        this.totalTime = totalTime;
     }
 
     public String getStatus() {
@@ -23,5 +25,13 @@ public class Result {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
     }
 }

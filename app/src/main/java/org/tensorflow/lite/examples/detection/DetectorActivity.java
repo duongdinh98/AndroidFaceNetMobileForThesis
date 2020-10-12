@@ -57,8 +57,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.tensorflow.lite.examples.detection.Models.FaceIdRegistration;
-import org.tensorflow.lite.examples.detection.Models.Result;
+import org.tensorflow.lite.examples.detection.response.FaceIdRegistration;
+import org.tensorflow.lite.examples.detection.response.Result;
 import org.tensorflow.lite.examples.detection.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.env.BorderedText;

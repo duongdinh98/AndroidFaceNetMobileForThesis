@@ -15,13 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.tensorflow.lite.examples.detection.Models.FaceIdDetails;
-import org.tensorflow.lite.examples.detection.Models.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.response.FaceIdDetails;
+import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
 import org.tensorflow.lite.examples.detection.tflite.FaceAntiSpoofing;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;

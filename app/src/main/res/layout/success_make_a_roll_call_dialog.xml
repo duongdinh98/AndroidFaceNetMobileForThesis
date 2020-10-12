@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-    android:background="@color/blurWhite">
+    android:padding="10dp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
@@ -16,8 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading_lottie" />
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/check_mark_lottie" />
 
     <TextView
         android:id="@+id/txtDialog"
@@ -25,11 +24,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
-        android:text="Loading..."
+        android:text="Text"
         android:textSize="17dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/animation_view" />
+
+    <Button
+        android:id="@+id/btn_ok_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="OK"
+        android:textSize="20sp"
+        android:textColor="@color/success"
+        android:background="@drawable/bg_btn_success_outline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDialog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

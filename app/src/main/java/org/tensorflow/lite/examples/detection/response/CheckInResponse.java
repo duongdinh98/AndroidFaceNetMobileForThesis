@@ -1,11 +1,11 @@
-package org.tensorflow.lite.examples.detection.Models;
+package org.tensorflow.lite.examples.detection.response;
 
-public class CheckInResults {
+public class CheckInResponse {
     private String status;
     private String message;
     private String id;
 
-    public CheckInResults(String status, String message, String id) {
+    public CheckInResponse(String status, String message, String id) {
         this.status = status;
         this.message = message;
         this.id = id;

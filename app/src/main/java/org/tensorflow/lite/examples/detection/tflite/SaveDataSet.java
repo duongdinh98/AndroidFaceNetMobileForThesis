@@ -1,5 +1,7 @@
 package org.tensorflow.lite.examples.detection.tflite;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -148,5 +150,28 @@ public class SaveDataSet {
             e.printStackTrace();
         }
         return url;
+    }
+
+    public static void saveToken (Context context, String token, String username) {
+        SharedPreferences prefs;
+        SharedPreferences.Editor edit;
+        prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        edit=prefs.edit();
+
+        edit.putString("jwt", token);
+        edit.putString("teacherName", username);
+        edit.apply();
+    }
+
+    public static String retrieveFromMyPrefs (Context context, String key) {
+        SharedPreferences prefs;
+        prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+
+        return prefs.getString(key,"");
+    }
+
+    public static void removeFromMyPrefs (Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        prefs.edit().remove(key).apply();
     }
 }

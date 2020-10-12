@@ -1,4 +1,4 @@
-package org.tensorflow.lite.examples.detection.Models;
+package org.tensorflow.lite.examples.detection.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

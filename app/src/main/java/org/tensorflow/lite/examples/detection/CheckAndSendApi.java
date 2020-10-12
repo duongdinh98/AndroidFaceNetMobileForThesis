@@ -8,22 +8,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.tensorflow.lite.examples.detection.Models.CheckInResults;
-import org.tensorflow.lite.examples.detection.Models.CheckOutResults;
-import org.tensorflow.lite.examples.detection.Models.Result;
+import org.tensorflow.lite.examples.detection.response.CheckInResponse;
+import org.tensorflow.lite.examples.detection.response.CheckOutResponse;
 import org.tensorflow.lite.examples.detection.tflite.FaceAntiSpoofing;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -221,11 +217,11 @@ public class CheckAndSendApi extends AppCompatActivity {
 
         Retrofit retrofit = APIClient.getClient();
         APIService callApi = retrofit.create(APIService.class);
-        Call<CheckInResults> call = callApi.doCheckIn(idLearner, body, checkInAt);
+        Call<CheckInResponse> call = callApi.doCheckIn(idLearner, body, checkInAt);
 
-        call.enqueue(new Callback<CheckInResults>() {
+        call.enqueue(new Callback<CheckInResponse>() {
             @Override
-            public void onResponse(Call<CheckInResults> call, Response<CheckInResults> response) {
+            public void onResponse(Call<CheckInResponse> call, Response<CheckInResponse> response) {
                 if(response.isSuccessful()) {
                     Toast.makeText(CheckAndSendApi.this, "Sent check in API", Toast.LENGTH_SHORT).show();
                     String checkInId = response.body().getId();
@@ -243,7 +239,7 @@ public class CheckAndSendApi extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CheckInResults> call, Throwable t) {
+            public void onFailure(Call<CheckInResponse> call, Throwable t) {
                 Toast.makeText(CheckAndSendApi.this, "Failed check in !", Toast.LENGTH_SHORT).show();
                 loadingDialog.dismissLoadingDialog();
                 LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
@@ -268,11 +264,11 @@ public class CheckAndSendApi extends AppCompatActivity {
 
         Retrofit retrofit = APIClient.getClient();
         APIService callApi = retrofit.create(APIService.class);
-        Call<CheckOutResults> call = callApi.doCheckOut(id, checkOutAt, body);
+        Call<CheckOutResponse> call = callApi.doCheckOut(id, checkOutAt, body);
 
-        call.enqueue(new Callback<CheckOutResults>() {
+        call.enqueue(new Callback<CheckOutResponse>() {
             @Override
-            public void onResponse(Call<CheckOutResults> call, Response<CheckOutResults> response) {
+            public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
                 Toast.makeText(CheckAndSendApi.this, "Sent check out API", Toast.LENGTH_SHORT).show();
                 if(response.isSuccessful()) {
                     int totalTime = response.body().getTotalTime();
@@ -288,7 +284,7 @@ public class CheckAndSendApi extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CheckOutResults> call, Throwable t) {
+            public void onFailure(Call<CheckOutResponse> call, Throwable t) {
                 Toast.makeText(CheckAndSendApi.this, "Failed check out !", Toast.LENGTH_SHORT).show();
                 loadingDialog.dismissLoadingDialog();
                 LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);

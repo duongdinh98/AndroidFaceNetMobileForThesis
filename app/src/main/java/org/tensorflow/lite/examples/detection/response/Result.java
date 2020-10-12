@@ -1,16 +1,12 @@
-package org.tensorflow.lite.examples.detection.Models;
+package org.tensorflow.lite.examples.detection.response;
 
-import android.content.Intent;
-
-public class CheckOutResults {
+public class Result {
     private String status;
     private String message;
-    private int totalTime;
 
-    public CheckOutResults(String status, String message, int totalTime) {
+    public Result(String status, String message) {
         this.status = status;
         this.message = message;
-        this.totalTime = totalTime;
     }
 
     public String getStatus() {
@@ -27,13 +23,5 @@ public class CheckOutResults {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public int getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(int totalTime) {
-        this.totalTime = totalTime;
     }
 }

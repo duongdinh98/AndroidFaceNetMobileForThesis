@@ -19,13 +19,27 @@
         android:roundIcon="@mipmap/ic_car"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ObjectDetection">
-        <activity android:name=".RegisterFaceId"></activity>
+        <activity android:name=".RegisterFaceId" />
         <activity android:name=".FaceNotRecognized" />
         <activity android:name=".CheckAndSendApi" />
+        <activity android:name=".ScreenSplash" />
+        <activity android:name=".ChooseOption" />
+        <activity android:name=".LoginOptions" />
+        <activity android:name=".Login" />
+        <activity android:name=".QRResult" />
+        <activity android:name=".Profile" />
+        <activity android:name=".Search" />
+        <activity android:name=".FaceConfirmLogin" />
+        <activity android:name=".RecognitionType" />
+        <activity android:name=".StudentProfile" />
+        <activity android:name=".FaceCheckInConfirm" />
+        <activity android:name=".FaceCheckOutConfirm" />
+        <activity android:name=".UnknownFace" />
         <activity
-            android:name=".ScreenSplash"
-            android:label="@string/tfe_od_app_name"
-            android:screenOrientation="portrait">
+            android:name="com.king.zxing.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CaptureTheme" />
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
