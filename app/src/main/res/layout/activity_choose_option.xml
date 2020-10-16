@@ -55,7 +55,7 @@
         app:layout_constraintGuide_percent="0.82" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgDhhh"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
@@ -90,7 +90,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/imgDhhh"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/mlkit" />
 
@@ -100,7 +100,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imgDhhh"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/tensorflow" />
 

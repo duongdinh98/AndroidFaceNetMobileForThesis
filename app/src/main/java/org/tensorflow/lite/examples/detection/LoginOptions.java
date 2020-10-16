@@ -5,11 +5,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import org.tensorflow.lite.examples.detection.response.LoginResponse;
+import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
+import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class LoginOptions extends AppCompatActivity {
     View logInAccount, logInFace;
@@ -36,9 +48,51 @@ public class LoginOptions extends AppCompatActivity {
         });
 
         logInFace.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginOptions.this, FaceConfirmLogin.class);
-            startActivity(intent);
-            finish();
+            getTeacherFaceEmbedding();
+        });
+    }
+
+    private void getTeacherFaceEmbedding() {
+        MyCustomDialog loadingSpinner = new MyCustomDialog(LoginOptions.this, "Chuẩn bị dữ liệu khuôn mặt...");
+        loadingSpinner.startLoadingDialog();
+
+        Retrofit retrofit = APIClient.getClient();
+        APIService callAPI = retrofit.create(APIService.class);
+        Call<TeacherEmbeddingResponse> call = callAPI.getTeacherEmbeddingsData();
+        call.enqueue(new Callback<TeacherEmbeddingResponse>() {
+            @Override
+            public void onResponse(Call<TeacherEmbeddingResponse> call, Response<TeacherEmbeddingResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getResult() == 0 ) {
+                        loadingSpinner.dismissDialog();
+                        Toast.makeText(LoginOptions.this, "Không có khuôn mặt nào được đăng kí", Toast.LENGTH_LONG).show();
+                    } else {
+                        HashMap<String, float[]> registeredTeacher = new HashMap<>();
+                        List<TeacherEmbeddingResponse.Datum> data = response.body().getData();
+
+                        for (TeacherEmbeddingResponse.Datum faceIdDetails : data) {
+                            if (faceIdDetails.getAccount() == null || faceIdDetails.getEmbedding() == null) continue;
+                            String extraData = faceIdDetails.getTen() + "&" + faceIdDetails.getAccount();
+                            float[] embeddings = SaveDataSet.transferStringToEmbedding(faceIdDetails.getEmbedding());
+
+                            registeredTeacher.put(extraData, embeddings);
+                        }
+                        SaveDataSet.serializeHashMap(registeredTeacher, "teacher_embeddings");
+                        loadingSpinner.dismissDialog();
+                        Intent intent = new Intent(LoginOptions.this, DetectorActivity.class);
+                        intent.putExtra("Mode", false);
+                        intent.putExtra("faceData", "teacher_embeddings");
+                        intent.putExtra("isForLogIn", true);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TeacherEmbeddingResponse> call, Throwable t) {
+                loadingSpinner.dismissDialog();
+            }
         });
     }
 }

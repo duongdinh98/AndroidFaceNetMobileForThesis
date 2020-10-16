@@ -57,8 +57,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.tensorflow.lite.examples.detection.response.FaceIdRegistration;
-import org.tensorflow.lite.examples.detection.response.Result;
+import org.tensorflow.lite.examples.detection.response.RegistrationResponse;
 import org.tensorflow.lite.examples.detection.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -144,6 +143,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   //private HashMap<String, Classifier.Recognition> knownFaces = new HashMap<>();
   private boolean isRegistration = false;
+  private String currentRegisterId = "";
+  private String currentFaceData = "";
+  private boolean isTeacherRegistration = false;
+  private boolean isForLogIn = false;
   private int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
   private int THRESHOLD_FOR_DENYING_RESULT = 3;
   private int numOfTimeRecognized = 0;
@@ -190,6 +193,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     numOfTimeNotRecognized = 0;
     Intent intent = getIntent();
     boolean mode = intent.getBooleanExtra("Mode", false);
+    currentRegisterId = intent.getStringExtra("qrData");
+    currentFaceData = intent.getStringExtra("faceData");
+    isTeacherRegistration = intent.getBooleanExtra("registerMode", false);
+    isForLogIn = intent.getBooleanExtra("isForLogIn", false);
     isRegistration = mode;
     if(!isRegistration) {
       fabAdd.setVisibility(View.INVISIBLE);
@@ -224,7 +231,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                       TF_OD_API_IS_QUANTIZED);
       //cropSize = TF_OD_API_INPUT_SIZE;
 
-      detector.reloadDataSet(isRegistration ? null : SaveDataSet.deSerializeHashMap());
+      detector.reloadDataSet(isRegistration ? null : SaveDataSet.deSerializeHashMap(currentFaceData));
 
     } catch (final IOException e) {
       e.printStackTrace();
@@ -430,41 +437,33 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   }
 
   private void showAddFaceDialog(SimilarityClassifier.Recognition rec) {
-
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     LayoutInflater inflater = getLayoutInflater();
     View dialogLayout = inflater.inflate(R.layout.image_edit_dialog, null);
     ImageView ivFace = dialogLayout.findViewById(R.id.dlg_image);
-    TextView tvTitle = dialogLayout.findViewById(R.id.dlg_title);
-    EditText dlg_input_idLearner = dialogLayout.findViewById(R.id.dlg_input_idLearner);
-    EditText etName = dialogLayout.findViewById(R.id.dlg_input_name);
+    TextView nameRegister = dialogLayout.findViewById(R.id.dlg_name_register);
+    TextView title = dialogLayout.findViewById(R.id.dlg_title);
 
-    tvTitle.setText("Add new FaceID");
+    title.setText("Thông tin khuôn mặt đăng ký");
+    nameRegister.setText("ID: " + currentRegisterId);
     ivFace.setImageBitmap(rec.getCrop());
-    etName.setHint("Input name");
-    dlg_input_idLearner.setHint("Input ID learner");
 
-    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-      @Override
-      public void onClick(DialogInterface dlg, int i) {
+    builder.setPositiveButton("ĐĂNG KÝ KHUÔN MẶT MỚI", (dlg, i) -> {
+      MyCustomDialog loadingSpinner = new MyCustomDialog(DetectorActivity.this, "Tiến hành đăng kí...");
+      loadingSpinner.startLoadingDialogNoAnim();
 
+        // detector.register(name, rec);
 
-          String name = etName.getText().toString();
-          String id = dlg_input_idLearner.getText().toString();
-          if (name.isEmpty() || id.isEmpty()) {
-              return;
-          }
-          detector.register(name, rec);
+        // Get embedding stored in Extra
+        final float[] emb = ((float[][]) rec.getExtra())[0];
+        String embeddingString = convertArrEmbToString(emb);
+        dlg.dismiss();
 
-          //Get embedding stored in Extra
-          final float[] emb = ((float[][]) rec.getExtra())[0];
-          String embeddingString = convertArrEmbToString(emb);
-
-          postRegistrationAPI(id, name, embeddingString);
-
-          //knownFaces.put(name, rec);
-          dlg.dismiss();
-      }
+        if (isTeacherRegistration) {
+          postTeacherRegistrationAPI(currentRegisterId, embeddingString, loadingSpinner);
+        } else {
+          postStudentRegistrationAPI(currentRegisterId, embeddingString, loadingSpinner);
+        }
     });
     builder.setView(dialogLayout);
     builder.show();
@@ -634,7 +633,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     (int) faceBB.width(),
                     (int) faceBB.height());
 
-            moveToCheckAndSendAPI(label, confidence, cropImageForSendAPI);
+            if (isForLogIn) {
+              moveToLoginWithFace(label);
+            } else {
+              moveToCheckAndSendAPI(label, confidence, cropImageForSendAPI);
+            }
           } else if (numOfTimeNotRecognized >= THRESHOLD_FOR_DENYING_RESULT && !isRegistration) {
             moveToFaceNotRecognized();
           }
@@ -658,7 +661,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         }
 
         final SimilarityClassifier.Recognition result = new SimilarityClassifier.Recognition(
-                "0", label, confidence, boundingBox);
+                "0", label.split("&")[0], confidence, boundingBox);
 
         result.setColor(color);
         result.setLocation(boundingBox);
@@ -726,28 +729,54 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     startActivity(intent);
   }
 
-  private void postRegistrationAPI(String idLearner, String name, String embedding) {
-//    String idLearner = input_idLearner.getText().toString().trim();
-//    String name = input_name.getText().toString().trim();
-//    String embedding = input_embedding.getText().toString().trim();
-
-    FaceIdRegistration faceIdData  = new FaceIdRegistration(idLearner, name, embedding);
-
+  private void postStudentRegistrationAPI(String id, String embeddings, MyCustomDialog loadingSpinner) {
     Retrofit retrofit = APIClient.getClient();
+    APIService apiCall = retrofit.create(APIService.class);
 
-    APIService callApi = retrofit.create(APIService.class);
+    Call<RegistrationResponse> call = apiCall.registerForStudent(id, embeddings);
 
-    Call<Result> call = callApi.register(faceIdData);
-
-    call.enqueue(new Callback<Result>() {
+    call.enqueue(new Callback<RegistrationResponse>() {
       @Override
-      public void onResponse(Call<Result> call, Response<Result> response) {
-        Toast.makeText(DetectorActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+      public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+        loadingSpinner.dismissDialog();
+        if (response.isSuccessful()) {
+          MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
+          successSpinner.startSuccessMakeARollCallDialog();
+        } else {
+          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại !");
+          failSpinner.startErrorMakeARollCallDialog();
+        }
       }
 
       @Override
-      public void onFailure(Call<Result> call, Throwable t) {
-        Toast.makeText(DetectorActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+      public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+        loadingSpinner.dismissDialog();
+      }
+    });
+  }
+
+  private void postTeacherRegistrationAPI(String id, String embeddings, MyCustomDialog loadingSpinner) {
+    Retrofit retrofit = APIClient.getClient();
+    APIService apiCall = retrofit.create(APIService.class);
+
+    Call<RegistrationResponse> call = apiCall.registerForTeacher(id, embeddings);
+
+    call.enqueue(new Callback<RegistrationResponse>() {
+      @Override
+      public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+        loadingSpinner.dismissDialog();
+        if (response.isSuccessful()) {
+          MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
+          successSpinner.startSuccessMakeARollCallDialog();
+        } else {
+          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại !");
+          failSpinner.startErrorMakeARollCallDialog();
+        }
+      }
+
+      @Override
+      public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+        loadingSpinner.dismissDialog();
       }
     });
   }
@@ -759,5 +788,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
     return embArr;
+  }
+
+  public void moveToLoginWithFace(String extraData) {
+    Intent intent = new Intent(DetectorActivity.this, FaceConfirmLogin.class);
+    intent.putExtra("teacherName", extraData.split("&")[0]);
+    intent.putExtra("accountId", extraData.split("&")[1]);
+    startActivity(intent);
+    finish();
   }
 }

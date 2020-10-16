@@ -90,7 +90,7 @@
         app:civ_border_color="#FF000000"/>
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/txt_card_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toTopOf="@+id/view4" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/txt_card_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -111,18 +111,30 @@
         android:text="Học viên mới"
         android:textColor="#6D8BED"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_card_name" />
 
     <TextView
         android:id="@+id/idNewFace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mã không tồn tại"
+        android:text="Mã không tồn tại, scan lại QR"
         android:textAllCaps="true"
         android:textColor="#ffffff"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switch_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng kí cho giảng viên "
+        android:textSize="18sp"
+        android:textColor="#28336C"
+        app:layout_constraintBottom_toTopOf="@+id/btn_start_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 </androidx.constraintlayout.widget.ConstraintLayout>

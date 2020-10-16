@@ -4,8 +4,10 @@ import org.tensorflow.lite.examples.detection.response.CheckInResponse;
 import org.tensorflow.lite.examples.detection.response.CheckOutResponse;
 import org.tensorflow.lite.examples.detection.response.FaceIdRegistration;
 import org.tensorflow.lite.examples.detection.response.LoginResponse;
+import org.tensorflow.lite.examples.detection.response.RegistrationResponse;
 import org.tensorflow.lite.examples.detection.response.Result;
 import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -20,7 +22,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface APIService {
-    // Authentication, authorization API
+    // ***Authentication, authorization API***
+    // For account
     @FormUrlEncoded
     @POST("/api/v1/users/login")
     Call<LoginResponse> login(
@@ -28,20 +31,37 @@ public interface APIService {
             @Field("password") String password
     );
 
+    // For face login
     @FormUrlEncoded
     @POST("api/v1/users/login-by-face")
     Call<LoginResponse> loginByFace(
-            @Field("idUser") String idUser
+            @Field("userId") String userId
     );
 
-    // Register new face id API
-    @POST("/api/v1/face_id")
-    Call<Result> register(@Body FaceIdRegistration faceId);
+    // ***Register new face API***
+    // For student
+    @FormUrlEncoded
+    @PATCH("/api/v1/student/register-face")
+    Call<RegistrationResponse> registerForStudent(
+            @Field("id") String id,
+            @Field("embeddings") String embeddings
+    );
 
-    @GET("/api/v1/face_id")
-    Call<ResultAllEmbeddings> getEmbeddingsData();
+    // For teacher
+    @FormUrlEncoded
+    @PATCH("/api/v1/teacher/register-face")
+    Call<RegistrationResponse> registerForTeacher(
+            @Field("id") String id,
+            @Field("embeddings") String embeddings
+    );
 
-    // Check-in, check-out API
+    // ***Get face data***
+    // For teacher
+    @GET("/api/v1/teacher?getEmbedding=true")
+    Call<TeacherEmbeddingResponse> getTeacherEmbeddingsData();
+
+    // ***Check-in, check-out API***
+    // For check in
     @Multipart
     @POST("/api/v1/attendance")
     Call<CheckInResponse> doCheckIn(
@@ -49,6 +69,7 @@ public interface APIService {
             @Part MultipartBody.Part imageCheckIn,
             @Part("checkInAt") RequestBody checkInAt);
 
+    // For check out
     @Multipart
     @PATCH("/api/v1/attendance")
     Call<CheckOutResponse> doCheckOut(

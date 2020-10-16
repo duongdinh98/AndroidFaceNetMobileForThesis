@@ -48,14 +48,14 @@ public class SaveDataSet {
 //        }
 //    }
 
-    public static HashMap<String, float[]> deSerializeHashMap() {
+    public static HashMap<String, float[]> deSerializeHashMap(String fileName) {
         HashMap<String, float[]> loadedData = new HashMap<>();
         FileInputStream fstream;
 
         try {
             String root = Environment.getExternalStorageDirectory().toString();
             File myDir = new File(root, "/LearnerDrivingCentre/EmbeddingsDetail");
-            File myFile = new File(myDir,"face_feature_details.ser");
+            File myFile = new File(myDir,fileName + ".ser");
 
             fstream = new FileInputStream(myFile);
             ObjectInputStream ois = new ObjectInputStream(fstream);
@@ -103,7 +103,7 @@ public class SaveDataSet {
         return image;
     }
 
-    public static void serializeHashMap(HashMap<String, float[]> dataSet) {
+    public static void serializeHashMap(HashMap<String, float[]> dataSet, String fileName) {
         FileOutputStream fstream;
         try
         {
@@ -112,7 +112,7 @@ public class SaveDataSet {
             if (!myDir.exists()) {
                 myDir.mkdirs();
             }
-            File myFile = new File(myDir,"face_feature_details.ser");
+            File myFile = new File(myDir,fileName + ".ser");
 
             fstream = new FileOutputStream(myFile);
             ObjectOutputStream oos = new ObjectOutputStream(fstream);
@@ -152,7 +152,7 @@ public class SaveDataSet {
         return url;
     }
 
-    public static void saveToken (Context context, String token, String username) {
+    public static void saveToken (Context context, String token, String username, String beLongTo) {
         SharedPreferences prefs;
         SharedPreferences.Editor edit;
         prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
@@ -160,6 +160,7 @@ public class SaveDataSet {
 
         edit.putString("jwt", token);
         edit.putString("teacherName", username);
+        edit.putString("beLongTo", beLongTo);
         edit.apply();
     }
 
@@ -173,5 +174,18 @@ public class SaveDataSet {
     public static void removeFromMyPrefs (Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         prefs.edit().remove(key).apply();
+    }
+
+    public static float[] transferStringToEmbedding(String string) {
+        // Vector 192 dimensions
+        float[] arr = new float[192];
+
+        String[] embeddingsInString = string.split("&");
+
+        for (int i = 0; i < (embeddingsInString.length - 1); i++){
+            arr[i] = Float.parseFloat(embeddingsInString[i]);
+        }
+
+        return arr;
     }
 }

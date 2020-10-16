@@ -8,7 +8,7 @@
     android:padding="50dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgDhhh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,5 +25,5 @@
         android:text="Successfully done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imgDhhh" />
 </androidx.constraintlayout.widget.ConstraintLayout>

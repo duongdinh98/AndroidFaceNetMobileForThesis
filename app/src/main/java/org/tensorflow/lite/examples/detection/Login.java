@@ -64,15 +64,17 @@ public class Login extends AppCompatActivity {
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    loadingSpinner.dismissDialog();
                     if(response.isSuccessful()) {
                         String token = response.body().getToken();
                         String teacherName = response.body().getData().getUser().getName();
                         String role = response.body().getData().getUser().getRole();
+                        String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                         if (!role.equals("teacher")) {
                             Toast.makeText(Login.this, "Phải đăng nhập bằng tài khoản giáo viên !", Toast.LENGTH_SHORT).show();
                         } else {
-                            SaveDataSet.saveToken(Login.this, token, teacherName);
+                            SaveDataSet.saveToken(Login.this, token, teacherName, beLongTo);
 
                             Intent intent = new Intent(Login.this, Profile.class);
                             startActivity(intent);
@@ -80,9 +82,8 @@ public class Login extends AppCompatActivity {
                         }
 
                     } else {
-                        Toast.makeText(Login.this, "Nhập sai tài khoản hoặc mật khẩu, thử lại !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại !", Toast.LENGTH_LONG).show();
                     }
-                    loadingSpinner.dismissDialog();
                 }
 
                 @Override

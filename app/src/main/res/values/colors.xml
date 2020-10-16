@@ -22,4 +22,5 @@
     <color name="login">#027ad7</color>
     <color name="success">#7fe870</color>
     <color name="error">#CB3E21</color>
+    <color name="detectScreen">#1ED89A</color>
 </resources>

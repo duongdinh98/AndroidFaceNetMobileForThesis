@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp">
@@ -10,35 +10,31 @@
         android:id="@+id/dlg_title"
         android:layout_gravity="center"
         android:textSize="20sp"
-        tools:text="The dialog title"
+        tools:text="Thông tin khuôn mặt đăng kí"
+        android:textColor="#28336C"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/dlg_name_register"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textAllCaps="true"
+        tools:text="Dư Đình Dương"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageView
         android:layout_gravity="center"
         android:id="@+id/dlg_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_baseline_image_24"
         />
-
-    <EditText
-        android:layout_gravity="center"
-        android:id="@+id/dlg_input_idLearner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:hint="The dialog hint"
-        />
-
-    <EditText
-        android:layout_gravity="center"
-        android:id="@+id/dlg_input_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:hint="The dialog hint"
-        />
-
 
 </LinearLayout>

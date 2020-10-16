@@ -68,6 +68,9 @@ public class LoginResponse {
         @SerializedName("email")
         @Expose
         private String email;
+        @SerializedName("beLongTo")
+        @Expose
+        private String beLongTo;
 
         public String getRole() {
             return role;
@@ -99,6 +102,14 @@ public class LoginResponse {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getBeLongTo() {
+            return beLongTo;
+        }
+
+        public void setBeLongTo(String beLongTo) {
+            this.beLongTo = beLongTo;
         }
     }
 }

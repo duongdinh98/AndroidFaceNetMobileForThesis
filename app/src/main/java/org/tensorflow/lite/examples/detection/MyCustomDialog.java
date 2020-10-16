@@ -40,6 +40,21 @@ public class MyCustomDialog {
         alertDialog.show();
     }
 
+    public void startLoadingDialogNoAnim() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.loading_no_anim_dialog, null);
+
+        TextView txtLoader = dialogLayout.findViewById(R.id.txtDialog);
+        txtLoader.setText(this.text);
+
+        builder.setView(dialogLayout);
+        builder.setCancelable(false);
+
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     public void startSuccessMakeARollCallDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();

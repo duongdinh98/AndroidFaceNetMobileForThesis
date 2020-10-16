@@ -123,10 +123,10 @@ public abstract class CameraActivity extends AppCompatActivity
 
       Window window = CameraActivity.this.getWindow();
       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-      window.setStatusBarColor(ContextCompat.getColor(CameraActivity.this, R.color.blurWhite));
+//      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      window.setStatusBarColor(ContextCompat.getColor(CameraActivity.this, R.color.detectScreen));
 
-      getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//      getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
     setContentView(R.layout.tfe_od_activity_camera);
 //    Toolbar toolbar = findViewById(R.id.toolbar);

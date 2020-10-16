@@ -2,9 +2,11 @@ package org.tensorflow.lite.examples.detection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,17 @@ import retrofit2.Retrofit;
 
 public class FaceConfirmLogin extends AppCompatActivity {
     Button btnLogin;
+    TextView txtName;
+    private String teacherName, account;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        teacherName = intent.getStringExtra("teacherName");
+        account = intent.getStringExtra("accountId");
+        txtName.setText(teacherName);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +47,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(FaceConfirmLogin.this, R.color.b4StartGra));
 
         btnLogin = findViewById(R.id.btn_send_check_out);
+        txtName = findViewById(R.id.txt_card_name);
 
         btnLogin.setOnClickListener(view -> {
             loginWithFace();
@@ -46,7 +60,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
 
         Retrofit retrofit = APIClient.getClient();
         APIService callAPI = retrofit.create(APIService.class);
-        Call<LoginResponse> call = callAPI.loginByFace("5f807fb1e25e4c2966801032");
+        Call<LoginResponse> call = callAPI.loginByFace(account);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -54,11 +68,12 @@ public class FaceConfirmLogin extends AppCompatActivity {
                     String token = response.body().getToken();
                     String teacherName = response.body().getData().getUser().getName();
                     String role = response.body().getData().getUser().getRole();
+                    String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                     if (!role.equals("teacher")) {
                         Toast.makeText(FaceConfirmLogin.this, "Phải đăng nhập bằng tài khoản giáo viên !", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveDataSet.saveToken(FaceConfirmLogin.this, token, teacherName);
+                        SaveDataSet.saveToken(FaceConfirmLogin.this, token, teacherName, beLongTo);
 
                         Intent intent = new Intent(FaceConfirmLogin.this, Profile.class);
                         startActivity(intent);
@@ -66,7 +81,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
                     }
 
                 } else {
-                    Toast.makeText(FaceConfirmLogin.this, "Mật khẩu khuôn mặt không tồn tại trong hệ thống !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FaceConfirmLogin.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại !", Toast.LENGTH_SHORT).show();
                 }
                 loadingSpinner.dismissDialog();
             }

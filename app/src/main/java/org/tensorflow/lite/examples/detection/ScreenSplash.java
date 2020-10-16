@@ -75,27 +75,28 @@ public class ScreenSplash extends AppCompatActivity {
         } else {
             splash_img.setImageBitmap(image);
         }
-        HashMap<String, float[]> registered = SaveDataSet.deSerializeHashMap();
-        if(registered != null) {
-            String text = "";
-            int numOfDim = 0;
-
-            Set<String> keySet = registered.keySet();
-            for (String key : keySet) {
-//                text = text + key + convertArrToString(registered.get(key));
-                numOfDim = registered.get(key).length;
-            }
-
-//            txt_check_hash_map.setText(text);
-            txt_check_hash_map.setText("Num of dimension: " + numOfDim + " Num of face registered: " + registered.size());
-        } else {
-            txt_check_hash_map.setText("NULL");
-        }
+//        HashMap<String, float[]> registered = SaveDataSet.deSerializeHashMap();
+//        if(registered != null) {
+//            String text = "";
+//            int numOfDim = 0;
+//
+//            Set<String> keySet = registered.keySet();
+//            for (String key : keySet) {
+////                text = text + key + convertArrToString(registered.get(key));
+//                numOfDim = registered.get(key).length;
+//            }
+//
+////            txt_check_hash_map.setText(text);
+//            txt_check_hash_map.setText("Num of dimension: " + numOfDim + " Num of face registered: " + registered.size());
+//        } else {
+//            txt_check_hash_map.setText("NULL");
+//        }
 
         btn_recognize.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Enter Recognition mode !",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(ScreenSplash.this, DetectorActivity.class);
             intent.putExtra("Mode", false);
+            intent.putExtra("faceData", "teacher_embeddings");
             startActivity(intent);
         });
 
@@ -107,33 +108,33 @@ public class ScreenSplash extends AppCompatActivity {
         });
 
         btnGetLatestData.setOnClickListener(view -> {
-            Retrofit retrofit = APIClient.getClient();
-            APIService callApi = retrofit.create(APIService.class);
-            Call<ResultAllEmbeddings> call = callApi.getEmbeddingsData();
-            call.enqueue(new Callback<ResultAllEmbeddings>() {
-                @Override
-                public void onResponse(Call<ResultAllEmbeddings> call, Response<ResultAllEmbeddings> response) {
-                    if(response.isSuccessful()) {
-                        HashMap<String, float[]> registeredData = new HashMap<>();
-                        List<FaceIdDetails> data = response.body().getFaceIdData();
-                        for (FaceIdDetails faceIdDetails : data) {
-                            String name = faceIdDetails.getName() + "&" + faceIdDetails.getId();
-                            float[] embeddings = transferStringToEmbedding(faceIdDetails.getEmbedding());
-
-                            registeredData.put(name, embeddings);
-                        }
-                        SaveDataSet.serializeHashMap(registeredData);
-                        Toast.makeText(ScreenSplash.this, "onResponse()", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(ScreenSplash.this, "404 or something !", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResultAllEmbeddings> call, Throwable t) {
-                    Toast.makeText(ScreenSplash.this, "onFailure()", Toast.LENGTH_SHORT).show();
-                }
-            });
+//            Retrofit retrofit = APIClient.getClient();
+//            APIService callApi = retrofit.create(APIService.class);
+//            Call<ResultAllEmbeddings> call = callApi.getEmbeddingsData();
+//            call.enqueue(new Callback<ResultAllEmbeddings>() {
+//                @Override
+//                public void onResponse(Call<ResultAllEmbeddings> call, Response<ResultAllEmbeddings> response) {
+//                    if(response.isSuccessful()) {
+//                        HashMap<String, float[]> registeredData = new HashMap<>();
+//                        List<FaceIdDetails> data = response.body().getFaceIdData();
+//                        for (FaceIdDetails faceIdDetails : data) {
+//                            String name = faceIdDetails.getName() + "&" + faceIdDetails.getId();
+//                            float[] embeddings = transferStringToEmbedding(faceIdDetails.getEmbedding());
+//
+//                            registeredData.put(name, embeddings);
+//                        }
+//                        SaveDataSet.serializeHashMap(registeredData);
+//                        Toast.makeText(ScreenSplash.this, "onResponse()", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(ScreenSplash.this, "404 or something !", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<ResultAllEmbeddings> call, Throwable t) {
+//                    Toast.makeText(ScreenSplash.this, "onFailure()", Toast.LENGTH_SHORT).show();
+//                }
+//            });
         });
 
         btnAnti.setOnClickListener(new View.OnClickListener() {

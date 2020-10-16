@@ -77,6 +77,7 @@ public class Profile extends AppCompatActivity {
     public void logout () {
         SaveDataSet.removeFromMyPrefs(Profile.this, "jwt");
         SaveDataSet.removeFromMyPrefs(Profile.this, "teacherName");
+        SaveDataSet.removeFromMyPrefs(Profile.this, "beLongTo");
         finish();
     }
 }
