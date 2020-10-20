@@ -35,6 +35,8 @@
         <activity android:name=".FaceCheckInConfirm" />
         <activity android:name=".FaceCheckOutConfirm" />
         <activity android:name=".UnknownFace" />
+        <activity android:name=".Classroom" />
+        <activity android:name=".Student" />
         <activity
             android:name="com.king.zxing.CaptureActivity"
             android:screenOrientation="portrait"

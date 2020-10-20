@@ -55,8 +55,8 @@ public class Profile extends AppCompatActivity {
 
         cvClassroom = findViewById(R.id.cv_classroom);
         cvClassroom.setOnClickListener(view -> {
-//            Intent intent = new Intent(Profile.this, Classroom.class);
-//            startActivity(intent);
+            Intent intent = new Intent(Profile.this, Classroom.class);
+            startActivity(intent);
         });
 
         cvLogOut = findViewById(R.id.cv_log_out);

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_time_table_item"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp"
+    android:layout_height="120dp">
+
+    <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        android:layout_width="220dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_student_name"
+            android:layout_marginTop="19dp"
+            android:textSize="22sp"
+            android:textColor="#000C5D"
+            android:text="Lã Đắc Hiếu"
+            android:textAllCaps="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/deses"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Sinh ngày: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_ngay_sinh"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="1998-03-13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/descdoes"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Số CMND: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_so_cmnd"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="0369855860"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|end">
+
+        <Button
+            android:id="@+id/btn_student_detail"
+            android:textColor="@color/niceYellow"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_btn_yellow_outline"
+            android:text="Chi tiết"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

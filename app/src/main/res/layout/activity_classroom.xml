@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E6F4F4F4"
+    tools:context=".Classroom">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/niceGreen"
+        android:layout_height="180dp"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="16dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách lớp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách lớp giảng dạy của bạn"
+                android:textStyle="bold"
+                android:textColor="#B4FFB8"
+                />
+
+            <TextView
+                android:id="@+id/txt_so_luong_lop"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"
+                android:text="Số lượng: 0"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:background="@drawable/bg_btn_yellow"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvClassroom"
+        android:layout_width="match_parent"
+        android:layout_marginTop="-40dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

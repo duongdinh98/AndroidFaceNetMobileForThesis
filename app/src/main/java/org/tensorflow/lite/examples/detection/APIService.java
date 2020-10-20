@@ -2,11 +2,13 @@ package org.tensorflow.lite.examples.detection;
 
 import org.tensorflow.lite.examples.detection.response.CheckInResponse;
 import org.tensorflow.lite.examples.detection.response.CheckOutResponse;
+import org.tensorflow.lite.examples.detection.response.ClassroomResponse;
 import org.tensorflow.lite.examples.detection.response.FaceIdRegistration;
 import org.tensorflow.lite.examples.detection.response.LoginResponse;
 import org.tensorflow.lite.examples.detection.response.RegistrationResponse;
 import org.tensorflow.lite.examples.detection.response.Result;
 import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.response.StudentResponse;
 import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
 
 import okhttp3.MultipartBody;
@@ -20,6 +22,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface APIService {
     // ***Authentication, authorization API***
@@ -76,4 +79,16 @@ public interface APIService {
             @Part("id") RequestBody id,
             @Part("checkOutAt") RequestBody checkOutAt,
             @Part MultipartBody.Part imageCheckIn);
+
+    // ***Get classes by teacher***
+    @GET("/api/v1/teacher/{id}/class")
+    Call<ClassroomResponse> getClassesByTeacher(
+            @Path("id") String teacherId
+    );
+
+    // ***Get students by class***
+    @GET("/api/v1/class/{id}/student?getEmbedding=false")
+    Call<StudentResponse> getStudentsByClass(
+            @Path("id") String classId
+    );
 }
