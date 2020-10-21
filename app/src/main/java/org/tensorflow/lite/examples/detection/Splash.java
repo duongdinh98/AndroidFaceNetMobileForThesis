@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import java.util.Objects;
 
 public class Splash extends AppCompatActivity {
+    FaceCheckHelper faceCheckHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,25 @@ public class Splash extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(Splash.this, R.color.blurWhite));
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        initSQLite();
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent = new Intent(Splash.this, ChooseOption.class);
             startActivity(intent);
             finish();
-        }, 3000);
+        }, 2000);
+    }
+
+    private void initSQLite() {
+        // Create database
+        faceCheckHelper = new FaceCheckHelper(Splash.this, "hnd_data.sqlite", null, 1);
+
+        // Create table
+        String create_attendance_table_sql = "CREATE TABLE IF NOT EXISTS attendance (\n" +
+                "\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                " \tidCheckIn TEXT,\n" +
+                " \tidHocVien TEXT\n" +
+                ")";
+        faceCheckHelper.queryData(create_attendance_table_sql);
     }
 }

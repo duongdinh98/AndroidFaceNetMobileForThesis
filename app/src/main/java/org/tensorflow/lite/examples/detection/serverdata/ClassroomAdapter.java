@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.tensorflow.lite.examples.detection.R;
+import org.tensorflow.lite.examples.detection.RecognitionType;
 import org.tensorflow.lite.examples.detection.Student;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
 {
     private ArrayList<ClassroomData> listData;
     private Context context;
+    private boolean isAttendance;
 
 
-    public ClassroomAdapter(ArrayList<ClassroomData> dataModel, Context c) {
+    public ClassroomAdapter(ArrayList<ClassroomData> dataModel, Context c, boolean isAttendance) {
         this.listData = dataModel;
         this.context = c;
+        this.isAttendance = isAttendance;
     }
 
     @NonNull
@@ -49,12 +52,21 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
         holder.txtLoaiBang.setText(loaiBang);
         holder.txtThoiGianHoc.setText(thoiGianHoc);
 
-        holder.btnDetail.setOnClickListener(view -> {
-            Intent intent = new Intent(context, Student.class);
-            intent.putExtra("className", tenLop);
-            intent.putExtra("classId", id);
-            context.startActivity(intent);
-        });
+        if(isAttendance) {
+            holder.btnDetail.setText("Điểm danh");
+            holder.btnDetail.setOnClickListener(view -> {
+                Intent intent = new Intent(context, RecognitionType.class);
+                intent.putExtra("classId", id);
+                context.startActivity(intent);
+            });
+        } else {
+            holder.btnDetail.setOnClickListener(view -> {
+                Intent intent = new Intent(context, Student.class);
+                intent.putExtra("className", tenLop);
+                intent.putExtra("classId", id);
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override

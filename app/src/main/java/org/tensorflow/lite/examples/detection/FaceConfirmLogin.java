@@ -2,7 +2,6 @@ package org.tensorflow.lite.examples.detection;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,8 +13,6 @@ import androidx.core.content.ContextCompat;
 
 import org.tensorflow.lite.examples.detection.response.LoginResponse;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +43,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(FaceConfirmLogin.this, R.color.b4StartGra));
 
-        btnLogin = findViewById(R.id.btn_send_check_out);
+        btnLogin = findViewById(R.id.btn_send_check_in);
         txtName = findViewById(R.id.txt_card_name);
 
         btnLogin.setOnClickListener(view -> {

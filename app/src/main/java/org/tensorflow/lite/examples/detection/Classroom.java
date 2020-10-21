@@ -41,7 +41,11 @@ public class Classroom extends AppCompatActivity {
 
         classroomRv = findViewById(R.id.rvClassroom);
         txtSoLuongLop = findViewById(R.id.txt_so_luong_lop);
-        fetchClassroomData();
+
+        Intent intent = getIntent();
+        boolean isAttendance = intent.getBooleanExtra("isAttendance", false);
+
+        fetchClassroomData(isAttendance);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class Classroom extends AppCompatActivity {
         super.onResume();
     }
 
-    private void fetchClassroomData () {
+    private void fetchClassroomData (boolean isAttendance) {
         ArrayList<ClassroomData> classData = new ArrayList<>();
 
         MyCustomDialog loadingSpinner = new MyCustomDialog(Classroom.this, "Tải dữ liệu lớp...");
@@ -69,7 +73,7 @@ public class Classroom extends AppCompatActivity {
                     for (ClassroomResponse.Datum classroom : classroomData) {
                         classData.add(new ClassroomData(classroom.getId(), classroom.getTenLop(), classroom.getKhaiGiang().split("T")[0], classroom.getIdLoaiBang().getTenBang(), classroom.getIdLoaiBang().getThoiGianHoc().toString()));
                     }
-                    ClassroomAdapter classroomAdapter = new ClassroomAdapter(classData, Classroom.this);
+                    ClassroomAdapter classroomAdapter = new ClassroomAdapter(classData, Classroom.this, isAttendance);
                     classroomRv.setLayoutManager(new LinearLayoutManager(Classroom.this));
                     classroomRv.setAdapter(classroomAdapter);
                 } else {

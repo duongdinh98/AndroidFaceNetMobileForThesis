@@ -146,7 +146,7 @@ public class ScreenSplash extends AppCompatActivity {
         });
 
 //        SQL LITE
-        initSQLite();
+//        initSQLite();
         anitSpoofing.setText("*" + SaveDataSet.readApiUrl() + "*");
     }
 
@@ -183,46 +183,46 @@ public class ScreenSplash extends AppCompatActivity {
         }
     }
 
-    private void antiSpoofing(Bitmap bitmapCrop1) {
-        // Đánh giá độ rõ nét của hình ảnh trước khi phát hiện trực tiếp
-        int laplace1 = fas.laplacian(bitmapCrop1);
-
-        String text = "清晰度检测结果left：" + laplace1;
-
-        if (laplace1 < FaceAntiSpoofing.LAPLACIAN_THRESHOLD) {
-            text = text + "，" + "False";
-            anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-        } else {
-            long start = System.currentTimeMillis();
-
-            // 活体检测
-            float score1 = fas.antiSpoofing(bitmapCrop1);
-
-            long end = System.currentTimeMillis();
-
-            text = "活体检测结果left：" + score1;
-            if (score1 < FaceAntiSpoofing.THRESHOLD) {
-                text = text + "，" + "True";
-                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_green_light));
-            } else {
-                text = text + "，" + "False";
-                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-            }
-            text = text + "。耗时" + (end - start);
-        }
-        anitSpoofing.setText(text);
-    }
-    private void initSQLite() {
-        // Create database
-        faceCheckHelper = new FaceCheckHelper(ScreenSplash.this, "lcd_data.sqlite", null, 1);
-
-        // Create table
-        String create_attendance_table_sql = "CREATE TABLE IF NOT EXISTS attendance (\n" +
-                "\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                " \tidCheckIn TEXT,\n" +
-                " \tidLeaner TEXT\n" +
-                ")";
-        faceCheckHelper.queryData(create_attendance_table_sql);
-    }
+//    private void antiSpoofing(Bitmap bitmapCrop1) {
+//        // Đánh giá độ rõ nét của hình ảnh trước khi phát hiện trực tiếp
+//        int laplace1 = fas.laplacian(bitmapCrop1);
+//
+//        String text = "清晰度检测结果left：" + laplace1;
+//
+//        if (laplace1 < FaceAntiSpoofing.LAPLACIAN_THRESHOLD) {
+//            text = text + "，" + "False";
+//            anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+//        } else {
+//            long start = System.currentTimeMillis();
+//
+//            // 活体检测
+//            float score1 = fas.antiSpoofing(bitmapCrop1);
+//
+//            long end = System.currentTimeMillis();
+//
+//            text = "活体检测结果left：" + score1;
+//            if (score1 < FaceAntiSpoofing.THRESHOLD) {
+//                text = text + "，" + "True";
+//                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+//            } else {
+//                text = text + "，" + "False";
+//                anitSpoofing.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+//            }
+//            text = text + "。耗时" + (end - start);
+//        }
+//        anitSpoofing.setText(text);
+//    }
+//    private void initSQLite() {
+//        // Create database
+//        faceCheckHelper = new FaceCheckHelper(ScreenSplash.this, "lcd_data.sqlite", null, 1);
+//
+//        // Create table
+//        String create_attendance_table_sql = "CREATE TABLE IF NOT EXISTS attendance (\n" +
+//                "\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+//                " \tidCheckIn TEXT,\n" +
+//                " \tidLeaner TEXT\n" +
+//                ")";
+//        faceCheckHelper.queryData(create_attendance_table_sql);
+//    }
 
 }

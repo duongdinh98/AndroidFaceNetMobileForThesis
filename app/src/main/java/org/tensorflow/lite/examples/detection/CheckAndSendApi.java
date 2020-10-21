@@ -107,7 +107,7 @@ public class CheckAndSendApi extends AppCompatActivity {
             SaveDataSet.saveBitmapToStorage(faceI, fileName);
             Toast.makeText(CheckAndSendApi.this, "Saved data", Toast.LENGTH_SHORT).show();
 
-            sendCheckInAPI(idLearner, checkInAt, fileName, loadingDialog);
+//            sendCheckInAPI(idLearner, checkInAt, fileName, loadingDialog);
         });
 
         btnCheckOut.setOnClickListener(view -> {
@@ -201,96 +201,96 @@ public class CheckAndSendApi extends AppCompatActivity {
 //        txtAntiSpoof.setText(text);
     }
 
-    private void sendCheckInAPI(String id, String time, String imageFileName, LoadingDialog loadingDialog) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
-        File imageFile = new File(myDir,imageFileName);
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
-
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body = MultipartBody.Part.createFormData("imageCheckIn", imageFile.getName(), requestFile);
-
-        // add another part within the multipart request
-        RequestBody idLearner = RequestBody.create(MediaType.parse("multipart/form-data"), id);
-        RequestBody checkInAt = RequestBody.create(MediaType.parse("multipart/form-data"), time);
-
-        Retrofit retrofit = APIClient.getClient();
-        APIService callApi = retrofit.create(APIService.class);
-        Call<CheckInResponse> call = callApi.doCheckIn(idLearner, body, checkInAt);
-
-        call.enqueue(new Callback<CheckInResponse>() {
-            @Override
-            public void onResponse(Call<CheckInResponse> call, Response<CheckInResponse> response) {
-                if(response.isSuccessful()) {
-                    Toast.makeText(CheckAndSendApi.this, "Sent check in API", Toast.LENGTH_SHORT).show();
-                    String checkInId = response.body().getId();
-                    FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
-
-//                    Check if idLeaner existed, so we delete
-                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idLeaner='" + id + "'");
-
-                    faceCheckHelper.queryData("INSERT INTO attendance (idLeaner, idCheckIn) VALUES ('" + id + "' ,'" + checkInId + "')");
-                    Toast.makeText(CheckAndSendApi.this, "Save checkInId to SQLite", Toast.LENGTH_SHORT).show();
-                    loadingDialog.dismissLoadingDialog();
-                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this);
-                    successDialog.startSuccessDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CheckInResponse> call, Throwable t) {
-                Toast.makeText(CheckAndSendApi.this, "Failed check in !", Toast.LENGTH_SHORT).show();
-                loadingDialog.dismissLoadingDialog();
-                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
-                errorDialog.startErrorDialog();
-            }
-        });
-    }
+//    private void sendCheckInAPI(String id, String time, String imageFileName, LoadingDialog loadingDialog) {
+//        String root = Environment.getExternalStorageDirectory().toString();
+//        File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
+//        File imageFile = new File(myDir,imageFileName);
+//
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
+//
+//        // MultipartBody.Part is used to send also the actual file name
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("imageCheckIn", imageFile.getName(), requestFile);
+//
+//        // add another part within the multipart request
+//        RequestBody idLearner = RequestBody.create(MediaType.parse("multipart/form-data"), id);
+//        RequestBody checkInAt = RequestBody.create(MediaType.parse("multipart/form-data"), time);
+//
+//        Retrofit retrofit = APIClient.getClient();
+//        APIService callApi = retrofit.create(APIService.class);
+//        Call<CheckInResponse> call = callApi.doCheckIn(idLearner, body, checkInAt);
+//
+//        call.enqueue(new Callback<CheckInResponse>() {
+//            @Override
+//            public void onResponse(Call<CheckInResponse> call, Response<CheckInResponse> response) {
+//                if(response.isSuccessful()) {
+//                    Toast.makeText(CheckAndSendApi.this, "Sent check in API", Toast.LENGTH_SHORT).show();
+//                    String checkInId = response.body().getId();
+//                    FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
+//
+////                    Check if idLeaner existed, so we delete
+//                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idLeaner='" + id + "'");
+//
+//                    faceCheckHelper.queryData("INSERT INTO attendance (idLeaner, idCheckIn) VALUES ('" + id + "' ,'" + checkInId + "')");
+//                    Toast.makeText(CheckAndSendApi.this, "Save checkInId to SQLite", Toast.LENGTH_SHORT).show();
+//                    loadingDialog.dismissLoadingDialog();
+//                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this);
+//                    successDialog.startSuccessDialog();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CheckInResponse> call, Throwable t) {
+//                Toast.makeText(CheckAndSendApi.this, "Failed check in !", Toast.LENGTH_SHORT).show();
+//                loadingDialog.dismissLoadingDialog();
+//                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
+//                errorDialog.startErrorDialog();
+//            }
+//        });
+//    }
 
     private void sendCheckOutAPI(String idCheckIn, String time, String imageFileName, LoadingDialog loadingDialog) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
-        File imageFile = new File(myDir,imageFileName);
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
-
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body = MultipartBody.Part.createFormData("imageCheckOut", imageFile.getName(), requestFile);
-
-        // add another part within the multipart request
-        RequestBody id = RequestBody.create(MediaType.parse("multipart/form-data"), idCheckIn);
-        RequestBody checkOutAt = RequestBody.create(MediaType.parse("multipart/form-data"), time);
-
-        Retrofit retrofit = APIClient.getClient();
-        APIService callApi = retrofit.create(APIService.class);
-        Call<CheckOutResponse> call = callApi.doCheckOut(id, checkOutAt, body);
-
-        call.enqueue(new Callback<CheckOutResponse>() {
-            @Override
-            public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
-                Toast.makeText(CheckAndSendApi.this, "Sent check out API", Toast.LENGTH_SHORT).show();
-                if(response.isSuccessful()) {
-                    int totalTime = response.body().getTotalTime();
-                    txtTotalTime.setText("Total time: " + convertSecondToTime(totalTime));
-
-                    FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
-                    // Clear
-                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idCheckIn='" + idCheckIn + "'");
-                    loadingDialog.dismissLoadingDialog();
-                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this, totalTime);
-                    successDialog.startSuccessCheckOutDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CheckOutResponse> call, Throwable t) {
-                Toast.makeText(CheckAndSendApi.this, "Failed check out !", Toast.LENGTH_SHORT).show();
-                loadingDialog.dismissLoadingDialog();
-                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
-                errorDialog.startErrorDialog();
-            }
-        });
+//        String root = Environment.getExternalStorageDirectory().toString();
+//        File myDir = new File(root, "/LearnerDrivingCentre/AttendanceImages");
+//        File imageFile = new File(myDir,imageFileName);
+//
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
+//
+//        // MultipartBody.Part is used to send also the actual file name
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("imageCheckOut", imageFile.getName(), requestFile);
+//
+//        // add another part within the multipart request
+//        RequestBody id = RequestBody.create(MediaType.parse("multipart/form-data"), idCheckIn);
+//        RequestBody checkOutAt = RequestBody.create(MediaType.parse("multipart/form-data"), time);
+//
+//        Retrofit retrofit = APIClient.getClient();
+//        APIService callApi = retrofit.create(APIService.class);
+//        Call<CheckOutResponse> call = callApi.doCheckOut(id, checkOutAt, body);
+//
+//        call.enqueue(new Callback<CheckOutResponse>() {
+//            @Override
+//            public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
+//                Toast.makeText(CheckAndSendApi.this, "Sent check out API", Toast.LENGTH_SHORT).show();
+//                if(response.isSuccessful()) {
+//                    int totalTime = response.body().getTotalTime();
+//                    txtTotalTime.setText("Total time: " + convertSecondToTime(totalTime));
+//
+//                    FaceCheckHelper faceCheckHelper = new FaceCheckHelper(CheckAndSendApi.this, "lcd_data.sqlite", null, 1);
+//                    // Clear
+//                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idCheckIn='" + idCheckIn + "'");
+//                    loadingDialog.dismissLoadingDialog();
+//                    LoadingDialog successDialog = new LoadingDialog(CheckAndSendApi.this, totalTime);
+//                    successDialog.startSuccessCheckOutDialog();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CheckOutResponse> call, Throwable t) {
+//                Toast.makeText(CheckAndSendApi.this, "Failed check out !", Toast.LENGTH_SHORT).show();
+//                loadingDialog.dismissLoadingDialog();
+//                LoadingDialog errorDialog = new LoadingDialog(CheckAndSendApi.this);
+//                errorDialog.startErrorDialog();
+//            }
+//        });
     }
 
     private  String convertSecondToTime(int seconds) {

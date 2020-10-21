@@ -147,6 +147,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private String currentFaceData = "";
   private boolean isTeacherRegistration = false;
   private boolean isForLogIn = false;
+  private boolean isCheckIn = false;
   private int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
   private int THRESHOLD_FOR_DENYING_RESULT = 3;
   private int numOfTimeRecognized = 0;
@@ -197,6 +198,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     currentFaceData = intent.getStringExtra("faceData");
     isTeacherRegistration = intent.getBooleanExtra("registerMode", false);
     isForLogIn = intent.getBooleanExtra("isForLogIn", false);
+    isCheckIn = intent.getBooleanExtra("isCheckIn", false);
     isRegistration = mode;
     if(!isRegistration) {
       fabAdd.setVisibility(View.INVISIBLE);
@@ -636,7 +638,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             if (isForLogIn) {
               moveToLoginWithFace(label);
             } else {
-              moveToCheckAndSendAPI(label, confidence, cropImageForSendAPI);
+              if(isCheckIn) {
+                moveToFaceCheckInConfirm(label, confidence, cropImageForSendAPI);
+              } else {
+                moveToFaceCheckOutConfirm(label, confidence, cropImageForSendAPI);
+              }
             }
           } else if (numOfTimeNotRecognized >= THRESHOLD_FOR_DENYING_RESULT && !isRegistration) {
             moveToFaceNotRecognized();
@@ -704,12 +710,24 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     alert.show();
   }
 
-  public void moveToCheckAndSendAPI(String name, float distance, Bitmap faceDetected) {
-//    faceDetected = Bitmap.createScaledBitmap(faceDetected, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, false);
-    Intent intent = new Intent(DetectorActivity.this, CheckAndSendApi.class);
+  public void moveToFaceCheckInConfirm(String name, float distance, Bitmap faceDetected) {
+    Log.d("duong", name);
+    Intent intent = new Intent(DetectorActivity.this, FaceCheckInConfirm.class);
     intent.putExtra("NameDetected", name);
     intent.putExtra("ConfidenceDetected", distance);
-//    intent.putExtra("FaceDetected", faceDetected);
+
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    faceDetected.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    byte[] bytes = stream.toByteArray();
+    intent.putExtra("FaceDetected",bytes);
+
+    startActivity(intent);
+  }
+
+  public void moveToFaceCheckOutConfirm(String name, float distance, Bitmap faceDetected) {
+    Intent intent = new Intent(DetectorActivity.this, FaceCheckOutConfirm.class);
+    intent.putExtra("NameDetected", name);
+    intent.putExtra("ConfidenceDetected", distance);
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     faceDetected.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -720,7 +738,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   }
 
   public void moveToFaceNotRecognized() {
-    Intent intent = new Intent(DetectorActivity.this, FaceNotRecognized.class);
+    Intent intent = new Intent(DetectorActivity.this, UnknownFace.class);
     startActivity(intent);
   }
 

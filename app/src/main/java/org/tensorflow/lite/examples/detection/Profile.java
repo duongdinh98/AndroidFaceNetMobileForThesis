@@ -1,5 +1,7 @@
 package org.tensorflow.lite.examples.detection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +45,8 @@ public class Profile extends AppCompatActivity {
 
         cvRollCall = findViewById(R.id.cv_roll_call);
         cvRollCall.setOnClickListener(view -> {
-            Intent intent = new Intent(Profile.this, RecognitionType.class);
+            Intent intent = new Intent(Profile.this, Classroom.class);
+            intent.putExtra("isAttendance", true);
             startActivity(intent);
         });
 
@@ -75,9 +78,20 @@ public class Profile extends AppCompatActivity {
     }
 
     public void logout () {
-        SaveDataSet.removeFromMyPrefs(Profile.this, "jwt");
-        SaveDataSet.removeFromMyPrefs(Profile.this, "teacherName");
-        SaveDataSet.removeFromMyPrefs(Profile.this, "beLongTo");
-        finish();
+        AlertDialog alertDialog = new AlertDialog.Builder(Profile.this).create();
+        alertDialog.setMessage("Đăng xuất tài khoản khỏi thiết bị này");
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ĐĂNG XUẤT", (dialog, which) -> {
+            SaveDataSet.removeFromMyPrefs(Profile.this, "jwt");
+            SaveDataSet.removeFromMyPrefs(Profile.this, "teacherName");
+            SaveDataSet.removeFromMyPrefs(Profile.this, "beLongTo");
+            finish();
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "HỦY", (dialog, which) -> {
+            alertDialog.dismiss();
+        });
+
+        alertDialog.show();
     }
 }

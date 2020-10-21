@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_marginLeft="16dp"
         android:orientation="vertical"
-        android:layout_width="220dp"
+        android:layout_width="210dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -112,7 +112,10 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_btn_yellow_outline"
             android:text="Chi tiết"
+            android:textSize="13sp"
             android:layout_width="wrap_content"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
             android:layout_height="25dp" />
 
     </LinearLayout>

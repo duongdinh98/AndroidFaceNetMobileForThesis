@@ -8,6 +8,7 @@ import org.tensorflow.lite.examples.detection.response.LoginResponse;
 import org.tensorflow.lite.examples.detection.response.RegistrationResponse;
 import org.tensorflow.lite.examples.detection.response.Result;
 import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.response.StudentEmbeddingResponse;
 import org.tensorflow.lite.examples.detection.response.StudentResponse;
 import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
 
@@ -18,6 +19,8 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -63,14 +66,21 @@ public interface APIService {
     @GET("/api/v1/teacher?getEmbedding=true")
     Call<TeacherEmbeddingResponse> getTeacherEmbeddingsData();
 
+    // For student by class
+    @GET("/api/v1/class/{id}/student?getEmbedding=true")
+    Call<StudentEmbeddingResponse> getStudentEmbeddingsData(
+            @Path("id") String classId
+    );
+
     // ***Check-in, check-out API***
     // For check in
     @Multipart
     @POST("/api/v1/attendance")
     Call<CheckInResponse> doCheckIn(
-            @Part("idLearner") RequestBody idLearner,
+            @Part("idHocVien") RequestBody idHocVien,
             @Part MultipartBody.Part imageCheckIn,
-            @Part("checkInAt") RequestBody checkInAt);
+            @Part("checkInAt") RequestBody checkInAt,
+            @Header("Authorization") String auth);
 
     // For check out
     @Multipart
@@ -78,7 +88,8 @@ public interface APIService {
     Call<CheckOutResponse> doCheckOut(
             @Part("id") RequestBody id,
             @Part("checkOutAt") RequestBody checkOutAt,
-            @Part MultipartBody.Part imageCheckIn);
+            @Part MultipartBody.Part imageCheckOut,
+            @Header("Authorization") String auth);
 
     // ***Get classes by teacher***
     @GET("/api/v1/teacher/{id}/class")

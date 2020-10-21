@@ -39,13 +39,13 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/bg_gradient4"
-        app:layout_constraintBottom_toTopOf="@+id/btn_send_check_out"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_check_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
 
     <Button
-        android:id="@+id/btn_send_check_out"
+        android:id="@+id/btn_send_check_in"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="25dp"

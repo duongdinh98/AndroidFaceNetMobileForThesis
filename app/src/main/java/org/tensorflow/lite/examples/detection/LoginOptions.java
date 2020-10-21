@@ -79,6 +79,7 @@ public class LoginOptions extends AppCompatActivity {
                         }
                         SaveDataSet.serializeHashMap(registeredTeacher, "teacher_embeddings");
                         loadingSpinner.dismissDialog();
+
                         Intent intent = new Intent(LoginOptions.this, DetectorActivity.class);
                         intent.putExtra("Mode", false);
                         intent.putExtra("faceData", "teacher_embeddings");
@@ -86,6 +87,9 @@ public class LoginOptions extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
+                } else {
+                    loadingSpinner.dismissDialog();
+                    Toast.makeText(LoginOptions.this, "Lấy dữ liệu khuôn mặt thất bại !", Toast.LENGTH_LONG).show();
                 }
             }
 
