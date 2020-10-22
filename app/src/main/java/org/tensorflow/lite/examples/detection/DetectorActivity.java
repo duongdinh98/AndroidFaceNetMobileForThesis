@@ -761,7 +761,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
           successSpinner.startSuccessMakeARollCallDialog();
         } else {
-          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại !");
+          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại");
           failSpinner.startErrorMakeARollCallDialog();
         }
       }
@@ -787,7 +787,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
           successSpinner.startSuccessMakeARollCallDialog();
         } else {
-          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại !");
+          MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại");
           failSpinner.startErrorMakeARollCallDialog();
         }
       }

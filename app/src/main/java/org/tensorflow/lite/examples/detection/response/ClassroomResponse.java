@@ -44,7 +44,7 @@ public class ClassroomResponse {
 
         @SerializedName("idGiangVien")
         @Expose
-        private String idGiangVien;
+        private IdGiangVien idGiangVien;
         @SerializedName("_id")
         @Expose
         private String id;
@@ -58,11 +58,11 @@ public class ClassroomResponse {
         @Expose
         private IdLoaiBang idLoaiBang;
 
-        public String getIdGiangVien() {
+        public IdGiangVien getIdGiangVien() {
             return idGiangVien;
         }
 
-        public void setIdGiangVien(String idGiangVien) {
+        public void setIdGiangVien(IdGiangVien idGiangVien) {
             this.idGiangVien = idGiangVien;
         }
 
@@ -97,32 +97,36 @@ public class ClassroomResponse {
         public void setIdLoaiBang(IdLoaiBang idLoaiBang) {
             this.idLoaiBang = idLoaiBang;
         }
+    }
 
-        public static class IdLoaiBang {
+    public static class IdLoaiBang {
 
-            @SerializedName("tenBang")
-            @Expose
-            private String tenBang;
-            @SerializedName("thoiGianHoc")
-            @Expose
-            private Integer thoiGianHoc;
+        @SerializedName("tenBang")
+        @Expose
+        private String tenBang;
+        @SerializedName("thoiGianHoc")
+        @Expose
+        private Integer thoiGianHoc;
 
-            public String getTenBang() {
-                return tenBang;
-            }
-
-            public void setTenBang(String tenBang) {
-                this.tenBang = tenBang;
-            }
-
-            public Integer getThoiGianHoc() {
-                return thoiGianHoc;
-            }
-
-            public void setThoiGianHoc(Integer thoiGianHoc) {
-                this.thoiGianHoc = thoiGianHoc;
-            }
-
+        public String getTenBang() {
+            return tenBang;
         }
+
+        public void setTenBang(String tenBang) {
+            this.tenBang = tenBang;
+        }
+
+        public Integer getThoiGianHoc() {
+            return thoiGianHoc;
+        }
+
+        public void setThoiGianHoc(Integer thoiGianHoc) {
+            this.thoiGianHoc = thoiGianHoc;
+        }
+
+    }
+
+    public static class IdGiangVien {
+
     }
 }

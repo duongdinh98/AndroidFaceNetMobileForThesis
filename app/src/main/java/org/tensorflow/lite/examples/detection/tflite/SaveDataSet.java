@@ -188,4 +188,33 @@ public class SaveDataSet {
 
         return arr;
     }
+
+    public static String convertSecondToTime(int seconds) {
+        if (seconds <= 0) {
+            return "0 giờ";
+        }
+
+        int ss = seconds % 60;
+        int hh = seconds / 60;
+        int mm = hh % 60;
+        hh = hh / 60;
+
+        String hour = "";
+        String minute = "";
+        String second = "";
+
+        if(hh != 0) {
+            hour = hh + " giờ ";
+        }
+
+        if(mm != 0) {
+            minute = mm + " phút ";
+        }
+
+        if(ss != 0) {
+            second = ss + " giây";
+        }
+
+        return ( hour + minute + second);
+    }
 }

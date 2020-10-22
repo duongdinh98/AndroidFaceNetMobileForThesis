@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity {
         String password = inputPassword.getText().toString().trim();
 
         if (email.equals("") || password.equals("")) {
-            Toast.makeText(this,"Email hoặc mật khẩu còn trống !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Email hoặc mật khẩu còn trống", Toast.LENGTH_SHORT).show();
         } else {
             MyCustomDialog loadingSpinner = new MyCustomDialog(Login.this, "Xác thực tài khoản...");
             loadingSpinner.startLoadingDialog();
@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                         String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                         if (!role.equals("teacher")) {
-                            Toast.makeText(Login.this, "Phải đăng nhập bằng tài khoản giáo viên !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT).show();
                         } else {
                             SaveDataSet.saveToken(Login.this, token, teacherName, beLongTo);
 
@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity {
                         }
 
                     } else {
-                        Toast.makeText(Login.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại !", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại", Toast.LENGTH_LONG).show();
                     }
                 }
 

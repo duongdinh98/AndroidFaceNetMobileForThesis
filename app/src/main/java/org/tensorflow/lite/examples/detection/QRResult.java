@@ -66,7 +66,9 @@ public class QRResult extends AppCompatActivity {
             });
 
         } else {
-            btnRegister.setEnabled(false);
+            btnRegister.setOnClickListener(view -> {
+                Toast.makeText(QRResult.this, "Mã QR không tồn tại, scan lại mã QR", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 }

@@ -8,6 +8,7 @@ import org.tensorflow.lite.examples.detection.response.LoginResponse;
 import org.tensorflow.lite.examples.detection.response.RegistrationResponse;
 import org.tensorflow.lite.examples.detection.response.Result;
 import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
+import org.tensorflow.lite.examples.detection.response.SearchResponse;
 import org.tensorflow.lite.examples.detection.response.StudentEmbeddingResponse;
 import org.tensorflow.lite.examples.detection.response.StudentResponse;
 import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
@@ -102,4 +103,11 @@ public interface APIService {
     Call<StudentResponse> getStudentsByClass(
             @Path("id") String classId
     );
+
+    // ***Get student searched data***
+    @GET("/api/v1/student/stats/{identity}")
+    Call<SearchResponse> getSearchStudentData(
+            @Path("identity") String identity
+    );
+
 }

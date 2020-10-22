@@ -82,7 +82,7 @@ public class Student extends AppCompatActivity {
                     studentRV.setLayoutManager(new LinearLayoutManager(Student.this));
                     studentRV.setAdapter(studentAdapter);
                 } else {
-                    Toast.makeText(Student.this, "Có lỗi xảy ra, thử lại !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Student.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -46,7 +46,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.txtSoCmnd.setText(soCmnd);
         holder.btnDetail.setOnClickListener(view -> {
             Intent intent = new Intent(context, StudentProfile.class);
-            intent.putExtra("studentName", studentName);
+            intent.putExtra("identity", soCmnd);
             context.startActivity(intent);
         });
     }

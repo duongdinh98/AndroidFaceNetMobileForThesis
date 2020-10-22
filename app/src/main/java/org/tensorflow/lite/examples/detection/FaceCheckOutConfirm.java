@@ -122,7 +122,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
             public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
                 loadingSpinner.dismissDialog();
                 if(response.isSuccessful()) {
-                    String totalTime = convertSecondToTime(response.body().getTotalTime());
+                    String totalTime = SaveDataSet.convertSecondToTime(response.body().getTotalTime());
 
                     FaceCheckHelper faceCheckHelper = new FaceCheckHelper(FaceCheckOutConfirm.this, "hnd_data.sqlite", null, 1);
                     // Clear check-in-out log
@@ -131,7 +131,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
                     MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Tổng thời gian lái xe: " + totalTime);
                     successSpinner.startSuccessMakeARollCallDialog();
                 } else {
-                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Check out thất bại, thử lại !");
+                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Check out thất bại, thử lại");
                     failSpinner.startErrorMakeARollCallDialog();
                 }
             }
@@ -139,34 +139,9 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckOutResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
-                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Lỗi mạng, thử lại sau !");
+                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Lỗi mạng, thử lại sau");
                 failSpinner.startErrorMakeARollCallDialog();
             }
         });
-    }
-
-    private  String convertSecondToTime(int seconds) {
-        int ss = seconds % 60;
-        int hh = seconds / 60;
-        int mm = hh % 60;
-        hh = hh / 60;
-
-        String hour = "";
-        String minute = "";
-        String second = "";
-
-        if(hh != 0) {
-            hour = hh + "giờ ";
-        }
-
-        if(mm != 0) {
-            minute = mm + "phút ";
-        }
-
-        if(ss != 0) {
-            second = ss + "giây";
-        }
-
-        return ( hour + minute + second);
     }
 }

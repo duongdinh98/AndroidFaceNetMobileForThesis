@@ -89,7 +89,7 @@ public class LoginOptions extends AppCompatActivity {
                     }
                 } else {
                     loadingSpinner.dismissDialog();
-                    Toast.makeText(LoginOptions.this, "Lấy dữ liệu khuôn mặt thất bại !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginOptions.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_LONG).show();
                 }
             }
 

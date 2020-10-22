@@ -68,7 +68,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
                     String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                     if (!role.equals("teacher")) {
-                        Toast.makeText(FaceConfirmLogin.this, "Phải đăng nhập bằng tài khoản giáo viên !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FaceConfirmLogin.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT).show();
                     } else {
                         SaveDataSet.saveToken(FaceConfirmLogin.this, token, teacherName, beLongTo);
 
@@ -78,7 +78,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
                     }
 
                 } else {
-                    Toast.makeText(FaceConfirmLogin.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FaceConfirmLogin.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại", Toast.LENGTH_SHORT).show();
                 }
                 loadingSpinner.dismissDialog();
             }

@@ -52,8 +52,8 @@ public class Profile extends AppCompatActivity {
 
         cvTimeTable = findViewById(R.id.cv_time_table);
         cvTimeTable.setOnClickListener(view -> {
-//            Intent intent = new Intent(Profile.this, TimeTable.class);
-//            startActivity(intent);
+            Intent intent = new Intent(Profile.this, TimeTable.class);
+            startActivity(intent);
         });
 
         cvClassroom = findViewById(R.id.cv_classroom);
@@ -74,7 +74,7 @@ public class Profile extends AppCompatActivity {
         });
 
         cvSync = findViewById(R.id.cv_sync);
-        cvSync.setOnClickListener(view -> Toast.makeText(Profile.this, "Syncing...", Toast.LENGTH_SHORT).show());
+        cvSync.setOnClickListener(view -> Toast.makeText(Profile.this, "Đồng bộ dữ liệu...", Toast.LENGTH_SHORT).show());
     }
 
     public void logout () {

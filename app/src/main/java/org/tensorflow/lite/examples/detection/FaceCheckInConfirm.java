@@ -126,7 +126,7 @@ public class FaceCheckInConfirm extends AppCompatActivity {
                     MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check in thành công");
                     successSpinner.startSuccessMakeARollCallDialog();
                 } else {
-                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check in thất bại, thử lại !");
+                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check in thất bại, thử lại");
                     failSpinner.startErrorMakeARollCallDialog();
                 }
             }
@@ -134,7 +134,7 @@ public class FaceCheckInConfirm extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckInResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
-                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Lỗi mạng, thử lại sau !");
+                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Lỗi mạng, thử lại sau");
                 failSpinner.startErrorMakeARollCallDialog();
             }
         });

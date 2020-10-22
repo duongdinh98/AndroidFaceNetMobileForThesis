@@ -2,21 +2,19 @@ package org.tensorflow.lite.examples.detection;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import java.util.Objects;
-
 public class Search extends AppCompatActivity {
     Button btnSearch;
-    TextView txtIdentity;
+    EditText identityInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +27,15 @@ public class Search extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(Search.this, R.color.startGradient));
 
         btnSearch = findViewById(R.id.btnSearch);
-        txtIdentity = findViewById(R.id.txt_search_cmnd);
+        identityInput = findViewById(R.id.edit_search_cmnd);
 
         btnSearch.setOnClickListener(view -> {
-            if (txtIdentity.getText().toString().trim().equals("")) {
-                Toast.makeText(Search.this, "Nhập mã số CMND", Toast.LENGTH_SHORT).show();
+            String identity = identityInput.getText().toString().trim();
+            if (identity.equals("")) {
+                Toast.makeText(Search.this, "Nhập số CMND để tìm kiếm", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(Search.this, StudentProfile.class);
+                intent.putExtra("identity", identity);
                 startActivity(intent);
             }
         });
