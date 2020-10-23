@@ -80,23 +80,23 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
         Cursor cursor = faceCheckHelper.getData("SELECT * FROM attendance WHERE idHocVien='" + idHocVien + "'");
 
         if((cursor != null) && (cursor.getCount() > 0)){
-            String id = "";
+            String idCheckIn = "";
             while (cursor.moveToNext()) {
-                id = cursor.getString(1);
+                idCheckIn = cursor.getString(1);
             }
 
             String time = thoiGianCheckOut.getText().toString();
 
             String fileName = idHocVien + "_check_out.png";
             SaveDataSet.saveBitmapToStorage(faceI, fileName);
-            sendCheckOutApi(fileName, id, time);
+            sendCheckOutApi(fileName, idCheckIn, time);
         } else {
-            MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, studentName + " chưa check in trước đó !");
+            MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, studentName + " chưa check in trước đó");
             failSpinner.startErrorMakeARollCallDialog();
         }
     }
 
-    private void sendCheckOutApi(String fileName, String id, String time) {
+    private void sendCheckOutApi(String fileName, String idCheckIn, String time) {
         MyCustomDialog loadingSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Thực hiện check out...");
         loadingSpinner.startLoadingDialog();
 
@@ -110,7 +110,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
         MultipartBody.Part body = MultipartBody.Part.createFormData("imageCheckOut", imageFile.getName(), requestFile);
 
         // add another part within the multipart request
-        RequestBody idAttendance = RequestBody.create(MediaType.parse("multipart/form-data"), id);
+        RequestBody idAttendance = RequestBody.create(MediaType.parse("multipart/form-data"), idCheckIn);
         RequestBody checkOutAt = RequestBody.create(MediaType.parse("multipart/form-data"), time);
 
         Retrofit retrofit = APIClient.getClient();
@@ -126,7 +126,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
 
                     FaceCheckHelper faceCheckHelper = new FaceCheckHelper(FaceCheckOutConfirm.this, "hnd_data.sqlite", null, 1);
                     // Clear check-in-out log
-                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idCheckIn='" + id + "'");
+                    faceCheckHelper.queryData("DELETE FROM attendance WHERE idCheckIn='" + idCheckIn + "'");
 
                     MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Tổng thời gian lái xe: " + totalTime);
                     successSpinner.startSuccessMakeARollCallDialog();

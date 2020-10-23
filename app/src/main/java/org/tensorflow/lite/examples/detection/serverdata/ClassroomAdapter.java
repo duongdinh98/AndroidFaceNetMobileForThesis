@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.RecognitionType;
 import org.tensorflow.lite.examples.detection.Student;
+import org.tensorflow.lite.examples.detection.StudentStatus;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,8 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
         if(isAttendance) {
             holder.btnDetail.setText("Điểm danh");
             holder.btnDetail.setOnClickListener(view -> {
-                Intent intent = new Intent(context, RecognitionType.class);
+                Intent intent = new Intent(context, StudentStatus.class);
+                intent.putExtra("className", tenLop);
                 intent.putExtra("classId", id);
                 context.startActivity(intent);
             });

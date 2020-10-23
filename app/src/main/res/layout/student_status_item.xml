@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_time_table_item"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp"
+    android:layout_height="120dp">
+
+    <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        android:layout_width="190dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_student_name"
+            android:layout_marginTop="19dp"
+            android:textSize="22sp"
+            android:textColor="#000C5D"
+            android:text="Lã Đắc Hiếu"
+            android:textAllCaps="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/deses"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Sinh ngày: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_ngay_sinh"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="1998-03-13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/descdoes"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Số CMND: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_so_cmnd"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="0369855860"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/attendance_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center|end"
+        >
+
+        <LinearLayout
+            android:id="@+id/check_mark_ci_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:text="Check-in:" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/check_in_status" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/check_mark_co_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            >
+
+            <TextView
+                android:id="@+id/textViewt"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:text="Check-out:"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                />
+            <ImageView
+                android:id="@+id/imageViewh"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/check_out_status" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

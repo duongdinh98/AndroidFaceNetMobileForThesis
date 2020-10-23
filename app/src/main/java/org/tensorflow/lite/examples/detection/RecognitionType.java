@@ -100,12 +100,8 @@ public class RecognitionType extends AppCompatActivity {
                     }
                 } else {
                     loadingSpinner.dismissDialog();
-                    vCheckIn.setOnClickListener(view -> {
-                        Toast.makeText(RecognitionType.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_LONG).show();
-                    });
-                    vCheckOut.setOnClickListener(view -> {
-                        Toast.makeText(RecognitionType.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_LONG).show();
-                    });
+                    Toast.makeText(RecognitionType.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
 

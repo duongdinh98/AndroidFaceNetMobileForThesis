@@ -2,8 +2,10 @@ package org.tensorflow.lite.examples.detection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,13 +14,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.tensorflow.lite.examples.detection.response.ClassroomResponse;
 import org.tensorflow.lite.examples.detection.response.StudentResponse;
-import org.tensorflow.lite.examples.detection.serverdata.ClassroomAdapter;
-import org.tensorflow.lite.examples.detection.serverdata.ClassroomData;
 import org.tensorflow.lite.examples.detection.serverdata.StudentAdapter;
 import org.tensorflow.lite.examples.detection.serverdata.StudentData;
-import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
+import org.tensorflow.lite.examples.detection.serverdata.StudentStatusAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,40 +27,50 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Student extends AppCompatActivity {
+public class StudentStatus extends AppCompatActivity {
     TextView txtTenLop, txtSiSoLop;
     RecyclerView studentRV;
+    Button startDiemDanh;
+    String idOfClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student);
+        setContentView(R.layout.activity_status_student);
 
-        Window window = Student.this.getWindow();
+        Window window = StudentStatus.this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(ContextCompat.getColor(Student.this, R.color.niceGreen));
+        window.setStatusBarColor(ContextCompat.getColor(StudentStatus.this, R.color.niceGreen));
 
         studentRV = findViewById(R.id.rvStudent);
         txtTenLop = findViewById(R.id.txt_ten_lop);
         txtSiSoLop = findViewById(R.id.txt_si_so_lop);
+        startDiemDanh = findViewById(R.id.btn_start_diem_danh);
 
         Intent intent = getIntent();
         String classId = intent.getStringExtra("classId");
+        idOfClass = classId;
         String className = intent.getStringExtra("className");
+
         txtTenLop.setText("Lớp: " + className);
-        fetchStudentData(classId);
+        startDiemDanh.setOnClickListener(view -> {
+            Intent intentNext = new Intent(StudentStatus.this, RecognitionType.class);
+            intentNext.putExtra("classId", classId);
+            startActivity(intentNext);
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        fetchStudentData(idOfClass);
     }
 
     private void fetchStudentData (String classId) {
         ArrayList<StudentData> studentData = new ArrayList<>();
 
-        MyCustomDialog loadingSpinner = new MyCustomDialog(Student.this, "Tải dữ liệu học viên...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(StudentStatus.this, "Tải dữ liệu học viên...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -78,11 +87,11 @@ public class Student extends AppCompatActivity {
                     for (StudentResponse.Datum student : studentsData) {
                         studentData.add(new StudentData(student.getId(), student.getTen(), student.getNgaySinh().split("T")[0], student.getCmnd()));
                     }
-                    StudentAdapter studentAdapter = new StudentAdapter(studentData, Student.this);
-                    studentRV.setLayoutManager(new LinearLayoutManager(Student.this));
+                    StudentStatusAdapter studentAdapter = new StudentStatusAdapter(studentData, StudentStatus.this);
+                    studentRV.setLayoutManager(new LinearLayoutManager(StudentStatus.this));
                     studentRV.setAdapter(studentAdapter);
                 } else {
-                    Toast.makeText(Student.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StudentStatus.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_LONG).show();
                 }
             }
 
