@@ -19,10 +19,6 @@
         android:roundIcon="@mipmap/ic_car"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ObjectDetection">
-        <activity android:name=".RegisterFaceId" />
-        <activity android:name=".FaceNotRecognized" />
-        <activity android:name=".CheckAndSendApi" />
-        <activity android:name=".ScreenSplash" />
         <activity android:name=".ChooseOption" />
         <activity android:name=".LoginOptions" />
         <activity android:name=".Login" />

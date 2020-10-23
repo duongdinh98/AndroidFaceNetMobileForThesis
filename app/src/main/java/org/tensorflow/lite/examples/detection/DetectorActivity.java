@@ -180,9 +180,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     faceDetector = detector;
 
-
-    //checkWritePermission();
-
   }
 
   @SuppressLint("RestrictedApi")
@@ -208,7 +205,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private void onAddClick() {
 
     addPending = true;
-    //Toast.makeText(this, "click", Toast.LENGTH_LONG ).show();
 
   }
 
@@ -485,7 +481,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
        SimilarityClassifier.Recognition rec = mappedRecognitions.get(0);
        if (rec.getExtra() != null) {
          showAddFaceDialog(rec);
-//         goToRegistration(rec);
        }
 
     }
@@ -689,27 +684,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   }
 
-  public void showDialogResult(String name) {
-    AlertDialog.Builder alert = new AlertDialog.Builder(DetectorActivity.this);
-    alert.setTitle("Send info");
-    alert.setCancelable(true);
-    alert.setMessage("Is your face matched your name " + name + " !");
-    alert.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialogInterface, int i) {
-        Toast.makeText(DetectorActivity.this, "Closed", Toast.LENGTH_SHORT).show();
-      }
-    });
-    alert.setNegativeButton("Send", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialogInterface, int i) {
-        Toast.makeText(DetectorActivity.this, "Sending...", Toast.LENGTH_LONG).show();
-      }
-    });
-
-    alert.show();
-  }
-
   public void moveToFaceCheckInConfirm(String name, float distance, Bitmap faceDetected) {
     Log.d("duong", name);
     Intent intent = new Intent(DetectorActivity.this, FaceCheckInConfirm.class);
@@ -739,11 +713,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   public void moveToFaceNotRecognized() {
     Intent intent = new Intent(DetectorActivity.this, UnknownFace.class);
-    startActivity(intent);
-  }
-
-  private void goToRegistration(SimilarityClassifier.Recognition rec) {
-    Intent intent = new Intent(DetectorActivity.this, RegisterFaceId.class);
     startActivity(intent);
   }
 

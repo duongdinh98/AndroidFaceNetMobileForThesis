@@ -47,8 +47,7 @@ public class ChooseOption extends AppCompatActivity {
         });
 
         imgDhhh.setOnClickListener(view -> {
-            Intent intent = new Intent(ChooseOption.this, ScreenSplash.class);
-            startActivity(intent);
+
         });
     }
 }
