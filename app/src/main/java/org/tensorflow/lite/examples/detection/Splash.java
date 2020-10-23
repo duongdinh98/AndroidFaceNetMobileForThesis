@@ -1,6 +1,8 @@
 package org.tensorflow.lite.examples.detection;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,12 +10,20 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.util.List;
 import java.util.Objects;
 
-public class Splash extends AppCompatActivity {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
+
+public class Splash extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+    private static final int RC_CAMERA_AND_STORAGE = 1998;
     FaceCheckHelper faceCheckHelper;
 
     @Override
@@ -27,13 +37,9 @@ public class Splash extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(Splash.this, R.color.blurWhite));
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        initSQLite();
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(Splash.this, ChooseOption.class);
-            startActivity(intent);
-            finish();
-        }, 2000);
+        initMyApp();
+
     }
 
     private void initSQLite() {
@@ -47,5 +53,48 @@ public class Splash extends AppCompatActivity {
                 " \tidHocVien TEXT\n" +
                 ")";
         faceCheckHelper.queryData(create_attendance_table_sql);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(RC_CAMERA_AND_STORAGE)
+    private void initMyApp() {
+        String[] perms = {Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            initSQLite();
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(Splash.this, ChooseOption.class);
+                startActivity(intent);
+                finish();
+            }, 2000);
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                    new PermissionRequest.Builder(this, RC_CAMERA_AND_STORAGE, perms)
+                            .setRationale("Ứng dụng cần bạn cấp quyền để hoạt động")
+                            .setPositiveButtonText("ĐỒNG Ý")
+                            .setNegativeButtonText("TỪ CHỐI VÀ THOÁT")
+                            .build());
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        finish();
     }
 }
