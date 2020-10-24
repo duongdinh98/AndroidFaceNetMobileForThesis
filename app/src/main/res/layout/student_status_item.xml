@@ -6,7 +6,7 @@
     android:background="@drawable/bg_time_table_item"
     android:orientation="horizontal"
     android:layout_marginBottom="20dp"
-    android:layout_height="120dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_marginLeft="16dp"
@@ -16,8 +16,8 @@
 
         <TextView
             android:id="@+id/txt_student_name"
-            android:layout_marginTop="19dp"
-            android:textSize="22sp"
+            android:layout_marginTop="18dp"
+            android:textSize="18sp"
             android:textColor="#000C5D"
             android:text="Lã Đắc Hiếu"
             android:textAllCaps="true"
@@ -52,7 +52,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="18dp">
 
             <TextView
                 android:id="@+id/descdoes"

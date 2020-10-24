@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +54,7 @@ public class LoginOptions extends AppCompatActivity {
     }
 
     private void getTeacherFaceEmbedding() {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(LoginOptions.this, "Chuẩn bị dữ liệu khuôn mặt...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(LoginOptions.this, "Ddang chuẩn bị dữ liệu khuôn mặt...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -65,7 +66,7 @@ public class LoginOptions extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getResult() == 0 ) {
                         loadingSpinner.dismissDialog();
-                        Toast.makeText(LoginOptions.this, "Không có khuôn mặt nào được đăng kí", Toast.LENGTH_LONG).show();
+                        Toasty.warning(LoginOptions.this, "Không có khuôn mặt nào được đăng kí", Toast.LENGTH_SHORT, true).show();
                     } else {
                         HashMap<String, float[]> registeredTeacher = new HashMap<>();
                         List<TeacherEmbeddingResponse.Datum> data = response.body().getData();
@@ -96,6 +97,7 @@ public class LoginOptions extends AppCompatActivity {
             @Override
             public void onFailure(Call<TeacherEmbeddingResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
+                Toasty.error(LoginOptions.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

@@ -22,32 +22,6 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class SaveDataSet {
-//    public static void serializeHashMap(String name, float[] emb) {
-//        FileOutputStream fstream;
-//        HashMap<String, float[]> dataSet = new HashMap<>();
-//        dataSet.put(name, emb);
-//        try
-//        {
-//            String root = Environment.getExternalStorageDirectory().toString();
-//            File myDir = new File(root, "/LearnerDrivingCentre/EmbeddingsDetail");
-//            if (!myDir.exists()) {
-//                myDir.mkdirs();
-//            }
-//            File myFile = new File(myDir,"face_feature_details.ser");
-//
-//            fstream = new FileOutputStream(myFile);
-//            ObjectOutputStream oos = new ObjectOutputStream(fstream);
-//            oos.writeObject(dataSet);
-//            oos.close();
-//            fstream.close();
-//
-//            Log.d("duong", "face_feature_details.ser saved");
-//        }catch(IOException ioe)
-//        {
-//            ioe.printStackTrace();
-//        }
-//    }
-
     public static HashMap<String, float[]> deSerializeHashMap(String fileName) {
         HashMap<String, float[]> loadedData = new HashMap<>();
         FileInputStream fstream;
@@ -63,7 +37,7 @@ public class SaveDataSet {
             ois.close();
             fstream.close();
 
-            Log.d("duong", "face_feature_details.ser reloaded");
+            Log.d("duong",  fileName +".ser reloaded");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -120,7 +94,7 @@ public class SaveDataSet {
             oos.close();
             fstream.close();
 
-            Log.d("duong", "face_feature_details.ser saved");
+            Log.d("duong", fileName + ".ser saved");
         }catch(IOException ioe)
         {
             ioe.printStackTrace();

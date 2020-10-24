@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import es.dmoral.toasty.Toasty;
+
 public class Search extends AppCompatActivity {
     Button btnSearch;
     EditText identityInput;
@@ -32,7 +34,7 @@ public class Search extends AppCompatActivity {
         btnSearch.setOnClickListener(view -> {
             String identity = identityInput.getText().toString().trim();
             if (identity.equals("")) {
-                Toast.makeText(Search.this, "Nhập số CMND để tìm kiếm", Toast.LENGTH_SHORT).show();
+                Toasty.warning(Search.this, "Nhập số CMND để tìm kiếm", Toast.LENGTH_SHORT, true).show();
             } else {
                 Intent intent = new Intent(Search.this, StudentProfile.class);
                 intent.putExtra("identity", identity);

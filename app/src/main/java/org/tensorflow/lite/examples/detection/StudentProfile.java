@@ -18,6 +18,7 @@ import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,7 +64,7 @@ public class StudentProfile extends AppCompatActivity {
     }
 
     private void fetchStudentInfo(String identity) {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(StudentProfile.this, "Tìm kiếm thông tin học viên...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(StudentProfile.this, "Đang tìm kiếm thông tin học viên...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -107,7 +108,7 @@ public class StudentProfile extends AppCompatActivity {
                     txtNgayNhapHoc.setText("Nhập học " + ngayNhapHoc);
 
                 } else {
-                    Toast.makeText(StudentProfile.this, "Không tìm thấy học viên với mã " + identity, Toast.LENGTH_LONG).show();
+                    Toasty.error(StudentProfile.this, "Không tìm thấy học viên với mã " + identity, Toast.LENGTH_SHORT, true).show();
                     finish();
                 }
             }
@@ -115,6 +116,7 @@ public class StudentProfile extends AppCompatActivity {
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
+                Toasty.error(StudentProfile.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

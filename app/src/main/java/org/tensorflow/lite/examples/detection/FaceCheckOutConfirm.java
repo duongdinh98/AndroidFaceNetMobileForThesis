@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -97,7 +98,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
     }
 
     private void sendCheckOutApi(String fileName, String idCheckIn, String time) {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Thực hiện check out...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Đang thực hiện check-out...");
         loadingSpinner.startLoadingDialog();
 
         String root = Environment.getExternalStorageDirectory().toString();
@@ -131,7 +132,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
                     MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Tổng thời gian lái xe: " + totalTime);
                     successSpinner.startSuccessMakeARollCallDialog();
                 } else {
-                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Check out thất bại, thử lại");
+                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Check-out thất bại, thử lại");
                     failSpinner.startErrorMakeARollCallDialog();
                 }
             }
@@ -139,8 +140,7 @@ public class FaceCheckOutConfirm extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckOutResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
-                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckOutConfirm.this, "Lỗi mạng, thử lại sau");
-                failSpinner.startErrorMakeARollCallDialog();
+                Toasty.error(FaceCheckOutConfirm.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

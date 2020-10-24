@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -82,7 +83,7 @@ public class FaceCheckInConfirm extends AppCompatActivity {
     }
 
     private void checkIn(String id, String studentName, Bitmap faceI) {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Thực hiện check in...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Đang thực hiện check-in...");
         loadingSpinner.startLoadingDialog();
 
         String time = thoiGianCheckIn.getText().toString();
@@ -123,10 +124,10 @@ public class FaceCheckInConfirm extends AppCompatActivity {
                     faceCheckHelper.queryData("DELETE FROM attendance WHERE idHocVien='" + id + "'");
                     faceCheckHelper.queryData("INSERT INTO attendance (idHocVien, idCheckIn) VALUES ('" + id + "' ,'" + checkInId + "')");
 
-                    MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check in thành công");
+                    MyCustomDialog successSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check-in thành công");
                     successSpinner.startSuccessMakeARollCallDialog();
                 } else {
-                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check in thất bại, thử lại");
+                    MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Check-in thất bại, thử lại");
                     failSpinner.startErrorMakeARollCallDialog();
                 }
             }
@@ -134,8 +135,7 @@ public class FaceCheckInConfirm extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckInResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
-                MyCustomDialog failSpinner = new MyCustomDialog(FaceCheckInConfirm.this, "Lỗi mạng, thử lại sau");
-                failSpinner.startErrorMakeARollCallDialog();
+                Toasty.error(FaceCheckInConfirm.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

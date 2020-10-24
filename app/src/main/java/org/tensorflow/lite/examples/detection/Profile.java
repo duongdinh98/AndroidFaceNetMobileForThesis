@@ -18,6 +18,8 @@ import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
+
 public class Profile extends AppCompatActivity {
     CardView cvRollCall, cvTimeTable, cvClassroom, cvLogOut, cvSearch, cvSync;
     TextView txtName, txtRole;
@@ -74,12 +76,13 @@ public class Profile extends AppCompatActivity {
         });
 
         cvSync = findViewById(R.id.cv_sync);
-        cvSync.setOnClickListener(view -> Toast.makeText(Profile.this, "Đồng bộ dữ liệu...", Toast.LENGTH_SHORT).show());
+        cvSync.setOnClickListener(view -> Toasty.info(Profile.this, "Đang đồng bộ dữ liệu...", Toast.LENGTH_SHORT, true).show());
     }
 
     public void logout () {
         AlertDialog alertDialog = new AlertDialog.Builder(Profile.this).create();
         alertDialog.setMessage("Đăng xuất tài khoản khỏi thiết bị này");
+        alertDialog.setCancelable(true);
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ĐĂNG XUẤT", (dialog, which) -> {
             SaveDataSet.removeFromMyPrefs(Profile.this, "jwt");

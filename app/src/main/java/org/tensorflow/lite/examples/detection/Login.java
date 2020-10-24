@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import org.tensorflow.lite.examples.detection.response.LoginResponse;
-import org.tensorflow.lite.examples.detection.response.ResultAllEmbeddings;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,9 +53,9 @@ public class Login extends AppCompatActivity {
         String password = inputPassword.getText().toString().trim();
 
         if (email.equals("") || password.equals("")) {
-            Toast.makeText(this,"Email hoặc mật khẩu còn trống", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Email hoặc mật khẩu còn trống", Toast.LENGTH_SHORT, true).show();
         } else {
-            MyCustomDialog loadingSpinner = new MyCustomDialog(Login.this, "Xác thực tài khoản...");
+            MyCustomDialog loadingSpinner = new MyCustomDialog(Login.this, "Đang xác thực tài khoản...");
             loadingSpinner.startLoadingDialog();
 
             Retrofit retrofit = APIClient.getClient();
@@ -72,23 +72,24 @@ public class Login extends AppCompatActivity {
                         String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                         if (!role.equals("teacher")) {
-                            Toast.makeText(Login.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT).show();
+                            Toasty.error(Login.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT, true).show();
                         } else {
                             SaveDataSet.saveToken(Login.this, token, teacherName, beLongTo);
-
+                            Toasty.success(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT, true).show();
                             Intent intent = new Intent(Login.this, Profile.class);
                             startActivity(intent);
                             finish();
                         }
 
                     } else {
-                        Toast.makeText(Login.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại", Toast.LENGTH_LONG).show();
+                        Toasty.error(Login.this, "Tài khoản không hợp lệ", Toast.LENGTH_LONG, true).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
                     loadingSpinner.dismissDialog();
+                    Toasty.error(Login.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
                 }
             });
         }

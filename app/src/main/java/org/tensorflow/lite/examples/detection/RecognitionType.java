@@ -17,6 +17,7 @@ import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 import java.util.HashMap;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,16 +47,17 @@ public class RecognitionType extends AppCompatActivity {
     }
 
     private void setWhenFetchFail() {
+        Toasty.warning(RecognitionType.this, "Không có khuôn mặt nào được đăng kí cho lóp này", Toast.LENGTH_SHORT, true).show();
         vCheckIn.setOnClickListener(view -> {
-            Toast.makeText(RecognitionType.this, "Không có khuôn mặt nào được đăng kí", Toast.LENGTH_LONG).show();
+            Toasty.warning(RecognitionType.this, "Không có khuôn mặt nào được đăng kí cho lóp này", Toast.LENGTH_SHORT, true).show();
         });
         vCheckOut.setOnClickListener(view -> {
-            Toast.makeText(RecognitionType.this, "Không có khuôn mặt nào được đăng kí", Toast.LENGTH_LONG).show();
+            Toasty.warning(RecognitionType.this, "Không có khuôn mặt nào được đăng kí cho lóp này", Toast.LENGTH_SHORT, true).show();
         });
     }
 
     private void fetchStudentEmbeddingsData(String classId) {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(RecognitionType.this, "Chuẩn bị dữ liệu khuôn mặt...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(RecognitionType.this, "Đang chuẩn bị dữ liệu khuôn mặt...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -100,7 +102,7 @@ public class RecognitionType extends AppCompatActivity {
                     }
                 } else {
                     loadingSpinner.dismissDialog();
-                    Toast.makeText(RecognitionType.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_LONG).show();
+                    Toasty.error(RecognitionType.this, "Lấy dữ liệu khuôn mặt thất bại", Toast.LENGTH_SHORT, true).show();
                     finish();
                 }
             }
@@ -108,6 +110,7 @@ public class RecognitionType extends AppCompatActivity {
             @Override
             public void onFailure(Call<StudentEmbeddingResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
+                Toasty.error(RecognitionType.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

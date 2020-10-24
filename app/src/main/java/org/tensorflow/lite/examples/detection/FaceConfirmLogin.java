@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import org.tensorflow.lite.examples.detection.response.LoginResponse;
 import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +53,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
     }
 
     private void loginWithFace() {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceConfirmLogin.this, "Xác thực tài khoản...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(FaceConfirmLogin.this, "Đang xác thực tài khoản...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -68,17 +69,17 @@ public class FaceConfirmLogin extends AppCompatActivity {
                     String beLongTo = response.body().getData().getUser().getBeLongTo();
 
                     if (!role.equals("teacher")) {
-                        Toast.makeText(FaceConfirmLogin.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT).show();
+                        Toasty.error(FaceConfirmLogin.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT, true).show();
                     } else {
                         SaveDataSet.saveToken(FaceConfirmLogin.this, token, teacherName, beLongTo);
-
+                        Toasty.success(FaceConfirmLogin.this, "Đăng nhập thành công", Toast.LENGTH_SHORT, true).show();
                         Intent intent = new Intent(FaceConfirmLogin.this, Profile.class);
                         startActivity(intent);
                         finish();
                     }
 
                 } else {
-                    Toast.makeText(FaceConfirmLogin.this, "Nhập sai tài khoản hoặc tài khoản này chưa được cấp người sở hữu, thử lại", Toast.LENGTH_SHORT).show();
+                    Toasty.error(FaceConfirmLogin.this, "Tài khoản không hợp lệ", Toast.LENGTH_LONG, true).show();
                 }
                 loadingSpinner.dismissDialog();
             }
@@ -86,6 +87,7 @@ public class FaceConfirmLogin extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
+                Toasty.error(FaceConfirmLogin.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

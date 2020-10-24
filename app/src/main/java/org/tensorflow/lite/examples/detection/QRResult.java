@@ -19,6 +19,8 @@ import com.king.zxing.Intents;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
+
 public class QRResult extends AppCompatActivity {
     TextView idNewFace, cardName, cardInfo;
     Button btnRegister;
@@ -67,7 +69,7 @@ public class QRResult extends AppCompatActivity {
 
         } else {
             btnRegister.setOnClickListener(view -> {
-                Toast.makeText(QRResult.this, "Mã QR không tồn tại, scan lại mã QR", Toast.LENGTH_SHORT).show();
+                Toasty.error(QRResult.this, "Mã QR không tồn tại, scan lại mã QR", Toast.LENGTH_SHORT, true).show();
             });
         }
     }

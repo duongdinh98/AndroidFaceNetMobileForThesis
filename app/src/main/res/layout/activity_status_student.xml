@@ -92,6 +92,7 @@
         android:layout_height="50dp"
         android:background="@drawable/bg_btn_nice_yellow"
         android:text="Thực hiện điểm danh"
+        android:textStyle="bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textSize="20sp"

@@ -23,6 +23,7 @@ import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,7 +62,7 @@ public class Student extends AppCompatActivity {
     private void fetchStudentData (String classId) {
         ArrayList<StudentData> studentData = new ArrayList<>();
 
-        MyCustomDialog loadingSpinner = new MyCustomDialog(Student.this, "Tải dữ liệu học viên...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(Student.this, "Đang tải dữ liệu học viên...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();
@@ -82,13 +83,14 @@ public class Student extends AppCompatActivity {
                     studentRV.setLayoutManager(new LinearLayoutManager(Student.this));
                     studentRV.setAdapter(studentAdapter);
                 } else {
-                    Toast.makeText(Student.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_LONG).show();
+                    Toasty.error(Student.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_SHORT, true).show();
                 }
             }
 
             @Override
             public void onFailure(Call<StudentResponse> call, Throwable t) {
                 loadingSpinner.dismissDialog();
+                Toasty.error(Student.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
             }
         });
     }

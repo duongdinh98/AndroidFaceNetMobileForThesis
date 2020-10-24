@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg"
+    android:orientation="vertical"
     tools:context=".Profile">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:text="TÊN GIÁO VIÊN"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/txt_role"
+            android:layout_below="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giáo viên hướng dẫn lái xe"
+            android:textColor="#B2FFFFFF"
+            android:textSize="14sp"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/user"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFF"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/svProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            >
-
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nguyễn Hữu Tuân"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:textSize="22sp"
-                />
-
-            <TextView
-                android:id="@+id/txt_role"
-                android:layout_below="@+id/txt_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Giáo viên hướng dẫn lái xe"
-                android:textColor="#B2FFFFFF"
-                android:textSize="14sp"
-                />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/user"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FFF"/>
-
-        </RelativeLayout>
-        
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +85,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/calendar"/>
-                    
+
                     <TextView
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
@@ -271,8 +275,6 @@
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
+    </ScrollView>
 
-    </LinearLayout>
-
-
-</ScrollView>
+</LinearLayout>
