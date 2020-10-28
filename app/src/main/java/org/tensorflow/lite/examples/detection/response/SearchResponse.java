@@ -67,6 +67,9 @@ public class SearchResponse {
         @SerializedName("email")
         @Expose
         private String email;
+        @SerializedName("embedding")
+        @Expose
+        private String embedding;
 
         public String getSdt() {
             return sdt;
@@ -140,6 +143,13 @@ public class SearchResponse {
             this.email = email;
         }
 
+        public String getEmbedding() {
+            return embedding;
+        }
+
+        public void setEmbedding(String embedding) {
+            this.embedding = embedding;
+        }
     }
 
     public static class IdLop {

@@ -67,7 +67,7 @@
         android:layout_marginTop="20dp"
         android:text="Sử dụng khuôn mặt"
         android:textColor="#ffffff"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/viewLoginFace"
         app:layout_constraintTop_toTopOf="@+id/viewLoginFace" />

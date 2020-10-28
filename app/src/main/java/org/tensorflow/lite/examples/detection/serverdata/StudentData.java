@@ -5,12 +5,14 @@ public class StudentData {
     private String tenHocVien;
     private String ngaySinh;
     private String soCmnd;
+    private String sdt;
 
-    public StudentData(String id, String tenHocVien, String ngaySinh, String soCmnd) {
+    public StudentData(String id, String tenHocVien, String ngaySinh, String soCmnd, String sdt) {
         this.id = id;
         this.tenHocVien = tenHocVien;
         this.ngaySinh = ngaySinh;
         this.soCmnd = soCmnd;
+        this.sdt = sdt;
     }
 
     public String getId() {
@@ -43,5 +45,13 @@ public class StudentData {
 
     public void setSoCmnd(String soCmnd) {
         this.soCmnd = soCmnd;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
     }
 }

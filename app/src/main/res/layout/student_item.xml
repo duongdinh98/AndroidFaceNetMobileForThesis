@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="18dp">
+            >
 
             <TextView
                 android:id="@+id/descdoes"
@@ -65,6 +65,32 @@
 
             <TextView
                 android:id="@+id/txt_so_cmnd"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="0369855860"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="18dp">
+
+            <TextView
+                android:id="@+id/deskk"
+                android:textSize="15sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Điện thoại: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_so_dt"
                 android:textSize="15sp"
                 android:textColor="#ADADAD"
                 android:layout_marginTop="8dp"

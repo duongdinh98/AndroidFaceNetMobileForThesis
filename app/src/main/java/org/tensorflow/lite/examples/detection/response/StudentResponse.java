@@ -54,6 +54,9 @@ public class StudentResponse {
         @SerializedName("cmnd")
         @Expose
         private String cmnd;
+        @SerializedName("sdt")
+        @Expose
+        private String sdt;
 
         public String getId() {
             return id;
@@ -87,5 +90,12 @@ public class StudentResponse {
             this.cmnd = cmnd;
         }
 
+        public String getSdt() {
+            return sdt;
+        }
+
+        public void setSdt(String sdt) {
+            this.sdt = sdt;
+        }
     }
 }

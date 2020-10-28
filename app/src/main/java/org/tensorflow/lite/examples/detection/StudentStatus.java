@@ -86,7 +86,7 @@ public class StudentStatus extends AppCompatActivity {
 
                     txtSiSoLop.setText("Sĩ số: " + response.body().getResult().toString());
                     for (StudentResponse.Datum student : studentsData) {
-                        studentData.add(new StudentData(student.getId(), student.getTen(), student.getNgaySinh().split("T")[0], student.getCmnd()));
+                        studentData.add(new StudentData(student.getId(), student.getTen(), student.getNgaySinh().split("T")[0], student.getCmnd(), student.getSdt()));
                     }
                     StudentStatusAdapter studentAdapter = new StudentStatusAdapter(studentData, StudentStatus.this);
                     studentRV.setLayoutManager(new LinearLayoutManager(StudentStatus.this));

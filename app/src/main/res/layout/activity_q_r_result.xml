@@ -50,7 +50,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
         android:background="@drawable/btn_blue"
-        android:text="tiến hành đăng kí"
+        android:text="Đăng kí cho học viên"
         android:textAllCaps="true"
         android:textColor="#ffffff"
         android:textSize="20sp"

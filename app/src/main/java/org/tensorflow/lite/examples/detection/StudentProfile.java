@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 
 public class StudentProfile extends AppCompatActivity {
     TextView txtStudentName, txtSoGioDaHoc, txtSoGioPhaiHoc, txtPassLyThuyet,
-            txtPassThucHanh, txtLoaiBang, txtTenLop, txtSoDt, txtDob, txtNgayNhapHoc;
+            txtPassThucHanh, txtLoaiBang, txtTenLop, txtSoDt, txtDob, txtNgayNhapHoc, txtDkKhuonMat;
     Button btnBack;
 
     @Override
@@ -49,6 +49,7 @@ public class StudentProfile extends AppCompatActivity {
         txtSoDt = findViewById(R.id.txt_so_dt);
         txtDob = findViewById(R.id.txt_dob);
         txtNgayNhapHoc = findViewById(R.id.txt_ngay_nhap_hoc);
+        txtDkKhuonMat = findViewById(R.id.txt_dk_khuon_mat);
 
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> finish());
@@ -88,13 +89,14 @@ public class StudentProfile extends AppCompatActivity {
                     } catch (Exception e) {
                         requiredTime = 0;
                         loaiBang = "chưa có";
-                        tenLop = "chưa có";
+                        tenLop = "chưa được xếp";
                     }
 
                     boolean isPassLyThuyet = response.body().getData().getIsPassLyThuyet();
                     String sdt = response.body().getData().getSdt();
                     String dob = response.body().getData().getNgaySinh().split("T")[0];
                     String ngayNhapHoc = response.body().getData().getNgayTao().split("T")[0];
+                    boolean isDkKhuonMat = response.body().getData().getEmbedding() != null;
 
                     txtStudentName.setText(name);
                     txtSoGioDaHoc.setText("Đã lái xe " + SaveDataSet.convertSecondToTime(totalTime));
@@ -106,6 +108,7 @@ public class StudentProfile extends AppCompatActivity {
                     txtSoDt.setText("Điện thoại " + sdt);
                     txtDob.setText("Sinh ngày " + dob);
                     txtNgayNhapHoc.setText("Nhập học " + ngayNhapHoc);
+                    txtDkKhuonMat.setText(isDkKhuonMat ? "Đã đăng kí khuôn mặt" : "Chưa kí khuôn mặt");
 
                 } else {
                     Toasty.error(StudentProfile.this, "Không tìm thấy học viên với mã " + identity, Toast.LENGTH_SHORT, true).show();

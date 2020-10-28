@@ -40,10 +40,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         String studentName = listData.get(position).getTenHocVien();
         String ngaySinh = listData.get(position).getNgaySinh();
         String soCmnd = listData.get(position).getSoCmnd();
+        String soDt = listData.get(position).getSdt();
 
         holder.txtStudentName.setText(studentName);
         holder.txtNgaySinh.setText(ngaySinh);
         holder.txtSoCmnd.setText(soCmnd);
+        holder.txtSoDt.setText(soDt);
         holder.btnDetail.setOnClickListener(view -> {
             Intent intent = new Intent(context, StudentProfile.class);
             intent.putExtra("identity", soCmnd);
@@ -57,7 +59,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtStudentName, txtNgaySinh, txtSoCmnd;
+        public TextView txtStudentName, txtNgaySinh, txtSoCmnd, txtSoDt;
         public Button btnDetail;
 
         public ViewHolder(@NonNull View itemView) {
@@ -67,6 +69,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
             this.txtNgaySinh = itemView.findViewById(R.id.txt_ngay_sinh);
             this.txtSoCmnd = itemView.findViewById(R.id.txt_so_cmnd);
             this.btnDetail = itemView.findViewById(R.id.btn_student_detail);
+            this.txtSoDt = itemView.findViewById(R.id.txt_so_dt);
         }
     }
 }

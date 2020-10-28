@@ -154,6 +154,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private int numOfTimeNotRecognized = 0;
   private int MINIMUM_WIDTH_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
   private int MINIMUM_HEIGHT_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
+  private final float THRESHOLD_FOR_ACCEPT_DISTANCE = 0.8f;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -601,7 +602,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 //          }
 
           float conf = result.getDistance();
-          if (conf < 1.0f && !isRegistration) {
+          if (conf < THRESHOLD_FOR_ACCEPT_DISTANCE && !isRegistration) {
             numOfTimeRecognized ++;
             confidence = conf;
             label = result.getTitle();

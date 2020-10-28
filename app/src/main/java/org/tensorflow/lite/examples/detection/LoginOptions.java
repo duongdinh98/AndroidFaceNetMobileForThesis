@@ -54,7 +54,7 @@ public class LoginOptions extends AppCompatActivity {
     }
 
     private void getTeacherFaceEmbedding() {
-        MyCustomDialog loadingSpinner = new MyCustomDialog(LoginOptions.this, "Ddang chuẩn bị dữ liệu khuôn mặt...");
+        MyCustomDialog loadingSpinner = new MyCustomDialog(LoginOptions.this, "Đang chuẩn bị dữ liệu khuôn mặt...");
         loadingSpinner.startLoadingDialog();
 
         Retrofit retrofit = APIClient.getClient();

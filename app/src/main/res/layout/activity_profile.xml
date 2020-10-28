@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="0dp">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -61,6 +61,7 @@
             android:columnOrderPreserved="false"
             android:alignmentMode="alignMargins"
             android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
             android:columnCount="2"
             android:rowCount="3">
 
