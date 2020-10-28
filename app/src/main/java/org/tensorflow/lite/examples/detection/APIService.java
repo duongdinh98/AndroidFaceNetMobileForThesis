@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.detection;
 
+import org.tensorflow.lite.examples.detection.response.CheckConnectionResponse;
 import org.tensorflow.lite.examples.detection.response.CheckInResponse;
 import org.tensorflow.lite.examples.detection.response.CheckOutResponse;
 import org.tensorflow.lite.examples.detection.response.ClassroomResponse;
@@ -107,4 +108,7 @@ public interface APIService {
             @Path("identity") String identity
     );
 
+    // ***Check connection to server***
+    @GET("/api/v1/attendance/seeding-fake-data")
+    Call<CheckConnectionResponse> checkConnection();
 }
