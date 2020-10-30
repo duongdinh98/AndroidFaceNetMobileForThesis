@@ -346,6 +346,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                   return;
                 }
 
+                for (Face face : faces) {
+                  // Head is rotated to the right rotY degrees
+                  float rotY = face.getHeadEulerAngleY();
+                  // Head is tilted sideways rotZ degrees
+                  float rotZ = face.getHeadEulerAngleZ();
+                  Log.d("duong", "right: " + rotY + " z: " + rotZ);
+                }
+
                 // Big face filter
                 List<Face> bigFaces = new ArrayList<>();
 
@@ -559,7 +567,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         RectF faceBB = new RectF(boundingBox);
         transform.mapRect(faceBB);
 
-        Log.d("duongi", "W: " + faceBB.width() + " H: " + faceBB.height());
+        Log.d("duong", "W: " + faceBB.width() + " H: " + faceBB.height());
 
         // translates portrait to origin and scales to fit input inference size
         //cv.drawRect(faceBB, paint);

@@ -7,19 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E6F4F4F4"
-    tools:context=".TimeTable">
+    tools:context=".StudentLocation">
 
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/timeTableColor"
+        android:background="@color/blueViolet"
         android:layout_height="198dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -32,7 +32,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Lịch giảng dạy"
+                    android:text="Địa điểm đón học viên"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
                     android:textColor="#FFF"
                     android:textSize="27sp" />
 
@@ -41,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Thời khóa biểu giảng viên"
+                    android:text="Thông tin ghi chú địa điểm đón học viên"
                     android:textColor="#747895"
                     android:textSize="14sp" />
 
@@ -50,17 +52,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="16dp"
-                android:gravity="bottom|end"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/button7"
-                    android:layout_width="150dp"
+                    android:id="@+id/btn_text_ten_lop"
+                    android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:background="@drawable/bg_btn_pink"
                     android:textStyle="bold"
-                    android:text="Xem lịch hôm nay"
+                    android:text="LỚP: trống"
+                    android:textAllCaps="true"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
                     android:textColor="#ffffff" />
 
             </LinearLayout>
@@ -77,9 +85,9 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timeTable"
+        android:id="@+id/rv_student_location"
         android:layout_width="match_parent"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="-50dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_height="wrap_content"

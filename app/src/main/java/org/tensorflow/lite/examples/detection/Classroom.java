@@ -44,9 +44,9 @@ public class Classroom extends AppCompatActivity {
         txtSoLuongLop = findViewById(R.id.txt_so_luong_lop);
 
         Intent intent = getIntent();
-        boolean isAttendance = intent.getBooleanExtra("isAttendance", false);
+        String type = intent.getStringExtra("type");
 
-        fetchClassroomData(isAttendance);
+        fetchClassroomData(type);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Classroom extends AppCompatActivity {
         super.onResume();
     }
 
-    private void fetchClassroomData (boolean isAttendance) {
+    private void fetchClassroomData (String type) {
         ArrayList<ClassroomData> classData = new ArrayList<>();
 
         MyCustomDialog loadingSpinner = new MyCustomDialog(Classroom.this, "Đang tải dữ liệu lớp...");
@@ -71,12 +71,16 @@ public class Classroom extends AppCompatActivity {
                     txtSoLuongLop.setText("Số lượng: " + response.body().getResult().toString());
                     List<ClassroomResponse.Datum> classroomData = response.body().getData();
 
-                    for (ClassroomResponse.Datum classroom : classroomData) {
-                        classData.add(new ClassroomData(classroom.getId(), classroom.getTenLop(), classroom.getKhaiGiang().split("T")[0], classroom.getIdLoaiBang().getTenBang(), classroom.getIdLoaiBang().getThoiGianHoc().toString()));
-                    }
-                    ClassroomAdapter classroomAdapter = new ClassroomAdapter(classData, Classroom.this, isAttendance);
-                    classroomRv.setLayoutManager(new LinearLayoutManager(Classroom.this));
-                    classroomRv.setAdapter(classroomAdapter);
+                    if (classroomData.size() > 0) {
+                        for (ClassroomResponse.Datum classroom : classroomData) {
+                            classData.add(new ClassroomData(classroom.getId(), classroom.getTenLop(), classroom.getKhaiGiang().split("T")[0], classroom.getIdLoaiBang().getTenBang(), classroom.getIdLoaiBang().getThoiGianHoc().toString()));
+                        }
+                        ClassroomAdapter classroomAdapter = new ClassroomAdapter(classData, Classroom.this, type);
+                        classroomRv.setLayoutManager(new LinearLayoutManager(Classroom.this));
+                        classroomRv.setAdapter(classroomAdapter);
+                    } else {
+                    Toasty.info(Classroom.this, "Giảng viên chưa được phân lớp", Toast.LENGTH_LONG, true).show();
+                }
                 } else {
                     Toasty.error(Classroom.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_SHORT, true).show();
                 }

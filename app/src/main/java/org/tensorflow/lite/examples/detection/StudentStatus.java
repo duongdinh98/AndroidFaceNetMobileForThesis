@@ -84,13 +84,17 @@ public class StudentStatus extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     List<StudentResponse.Datum> studentsData = response.body().getData();
 
-                    txtSiSoLop.setText("Sĩ số: " + response.body().getResult().toString());
-                    for (StudentResponse.Datum student : studentsData) {
-                        studentData.add(new StudentData(student.getId(), student.getTen(), student.getNgaySinh().split("T")[0], student.getCmnd(), student.getSdt()));
+                    if (studentsData.size() > 0) {
+                        txtSiSoLop.setText("Sĩ số: " + response.body().getResult().toString());
+                        for (StudentResponse.Datum student : studentsData) {
+                            studentData.add(new StudentData(student.getId(), student.getTen(), student.getNgaySinh().split("T")[0], student.getCmnd(), student.getSdt()));
+                        }
+                        StudentStatusAdapter studentAdapter = new StudentStatusAdapter(studentData, StudentStatus.this);
+                        studentRV.setLayoutManager(new LinearLayoutManager(StudentStatus.this));
+                        studentRV.setAdapter(studentAdapter);
+                    } else {
+                        Toasty.info(StudentStatus.this, "Lớp không có học viên", Toast.LENGTH_LONG, true).show();
                     }
-                    StudentStatusAdapter studentAdapter = new StudentStatusAdapter(studentData, StudentStatus.this);
-                    studentRV.setLayoutManager(new LinearLayoutManager(StudentStatus.this));
-                    studentRV.setAdapter(studentAdapter);
                 } else {
                     Toasty.error(StudentStatus.this, "Có lỗi xảy ra, thử lại", Toast.LENGTH_SHORT, true).show();
                 }

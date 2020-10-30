@@ -10,6 +10,7 @@ import org.tensorflow.lite.examples.detection.response.SearchResponse;
 import org.tensorflow.lite.examples.detection.response.StudentEmbeddingResponse;
 import org.tensorflow.lite.examples.detection.response.StudentResponse;
 import org.tensorflow.lite.examples.detection.response.TeacherEmbeddingResponse;
+import org.tensorflow.lite.examples.detection.response.UpdateLocationResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -106,6 +107,14 @@ public interface APIService {
     @GET("/api/v1/student/stats/{identity}")
     Call<SearchResponse> getSearchStudentData(
             @Path("identity") String identity
+    );
+
+    // ***Update student's location***
+    @FormUrlEncoded
+    @PATCH("/api/v1/student/student-location/{id}")
+    Call<UpdateLocationResponse> updateStudentLocation(
+            @Path("id") String id,
+            @Field("location") String location
     );
 
     // ***Check connection to server***

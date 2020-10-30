@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_time_table_item"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        android:layout_width="210dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_name_of_student"
+            android:textSize="22sp"
+            android:textColor="@color/blueViolet"
+            android:textAllCaps="true"
+            android:text="Dư Đình Dương "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/csdcxs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Điện thoại: "
+                android:textColor="#ADADAD"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_phone_num"
+                android:textSize="16sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Trống"
+                android:autoLink="phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_location"
+                android:textSize="16sp"
+                android:textColor="#ADADAD"
+                android:layout_marginTop="8dp"
+                android:text="Trống"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center|end">
+
+        <Button
+            android:id="@+id/btn_update_location"
+            android:textColor="@color/nicePink"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_btn_pink_outline"
+            android:text="Cập nhật"
+            android:layout_width="wrap_content"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:layout_height="25dp" />
+
+        <ImageView
+            android:id="@+id/btn_call_student"
+            android:layout_marginTop="15dp"
+            android:layout_width="88dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            app:srcCompat="@drawable/outgoing_call" />
+
+    </LinearLayout>
+
+</LinearLayout>

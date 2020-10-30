@@ -57,6 +57,9 @@ public class StudentResponse {
         @SerializedName("sdt")
         @Expose
         private String sdt;
+        @SerializedName("pickUpLocation")
+        @Expose
+        private String pickUpLocation;
 
         public String getId() {
             return id;
@@ -96,6 +99,14 @@ public class StudentResponse {
 
         public void setSdt(String sdt) {
             this.sdt = sdt;
+        }
+
+        public String getPickUpLocation() {
+            return pickUpLocation;
+        }
+
+        public void setPickUpLocation(String pickUpLocation) {
+            this.pickUpLocation = pickUpLocation;
         }
     }
 }

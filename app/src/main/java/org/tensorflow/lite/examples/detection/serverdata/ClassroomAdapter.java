@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.tensorflow.lite.examples.detection.R;
-import org.tensorflow.lite.examples.detection.RecognitionType;
 import org.tensorflow.lite.examples.detection.Student;
 import org.tensorflow.lite.examples.detection.StudentStatus;
+import org.tensorflow.lite.examples.detection.StudentLocation;
 
 import java.util.ArrayList;
 
@@ -22,13 +22,13 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
 {
     private ArrayList<ClassroomData> listData;
     private Context context;
-    private boolean isAttendance;
+    private String type;
 
 
-    public ClassroomAdapter(ArrayList<ClassroomData> dataModel, Context c, boolean isAttendance) {
+    public ClassroomAdapter(ArrayList<ClassroomData> dataModel, Context c, String type) {
         this.listData = dataModel;
         this.context = c;
-        this.isAttendance = isAttendance;
+        this.type = type;
     }
 
     @NonNull
@@ -53,7 +53,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
         holder.txtLoaiBang.setText(loaiBang);
         holder.txtThoiGianHoc.setText(thoiGianHoc);
 
-        if(isAttendance) {
+        if(type.equals("forAttendance")) {
             holder.btnDetail.setText("Điểm danh");
             holder.btnDetail.setOnClickListener(view -> {
                 Intent intent = new Intent(context, StudentStatus.class);
@@ -61,7 +61,18 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
                 intent.putExtra("classId", id);
                 context.startActivity(intent);
             });
-        } else {
+        }
+        if (type.equals("forLocation")){
+            holder.btnDetail.setText("Xem vị trí");
+            holder.btnDetail.setOnClickListener(view -> {
+                Intent intent = new Intent(context, StudentLocation.class);
+                intent.putExtra("className", tenLop);
+                intent.putExtra("classId", id);
+                context.startActivity(intent);
+            });
+        }
+
+        if (type.equals("forClassroom")){
             holder.btnDetail.setOnClickListener(view -> {
                 Intent intent = new Intent(context, Student.class);
                 intent.putExtra("className", tenLop);

@@ -85,12 +85,12 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/calendar"/>
+                        android:src="@drawable/map_location_120px"/>
 
                     <TextView
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:text="Lịch giảng dạy"
+                        android:text="Địa điểm đón học viên"
                         android:textAlignment="center"
                         android:textSize="18sp"
                         android:textColor="#213377"
@@ -125,7 +125,7 @@
                     <TextView
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:text="Danh sách lớp"
+                        android:text="Thông tin lớp giảng dạy"
                         android:textAlignment="center"
                         android:textSize="18sp"
                         android:textColor="#213377"
@@ -160,7 +160,7 @@
                     <TextView
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:text="Điểm danh"
+                        android:text="Điểm danh học viên"
                         android:textAlignment="center"
                         android:textSize="18sp"
                         android:textColor="#213377"

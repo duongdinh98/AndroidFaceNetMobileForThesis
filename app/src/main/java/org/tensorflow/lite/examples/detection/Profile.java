@@ -48,19 +48,21 @@ public class Profile extends AppCompatActivity {
         cvRollCall = findViewById(R.id.cv_roll_call);
         cvRollCall.setOnClickListener(view -> {
             Intent intent = new Intent(Profile.this, Classroom.class);
-            intent.putExtra("isAttendance", true);
+            intent.putExtra("type", "forAttendance");
             startActivity(intent);
         });
 
         cvTimeTable = findViewById(R.id.cv_time_table);
         cvTimeTable.setOnClickListener(view -> {
-            Intent intent = new Intent(Profile.this, TimeTable.class);
+            Intent intent = new Intent(Profile.this, Classroom.class);
+            intent.putExtra("type", "forLocation");
             startActivity(intent);
         });
 
         cvClassroom = findViewById(R.id.cv_classroom);
         cvClassroom.setOnClickListener(view -> {
             Intent intent = new Intent(Profile.this, Classroom.class);
+            intent.putExtra("type", "forClassroom");
             startActivity(intent);
         });
 
