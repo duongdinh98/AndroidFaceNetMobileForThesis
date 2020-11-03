@@ -68,6 +68,7 @@ import org.tensorflow.lite.examples.detection.tflite.SimilarityClassifier;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import org.tensorflow.lite.examples.detection.tracking.MultiBoxTracker;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -148,19 +149,22 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private boolean isTeacherRegistration = false;
   private boolean isForLogIn = false;
   private boolean isCheckIn = false;
-  private int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
-  private int THRESHOLD_FOR_DENYING_RESULT = 3;
+  private final int THRESHOLD_FOR_ACCEPTING_RESULT = 3;
+  private final int THRESHOLD_FOR_DENYING_RESULT = 3;
   private int numOfTimeRecognized = 0;
   private int numOfTimeNotRecognized = 0;
-  private int MINIMUM_WIDTH_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
-  private int MINIMUM_HEIGHT_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
-  private final float THRESHOLD_FOR_ACCEPT_DISTANCE = 0.8f;
+  private final int MINIMUM_WIDTH_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
+  private final int MINIMUM_HEIGHT_FACE_SIZE_TO_PROCESS_PROM_MLKIT = 150;
+  private final float THRESHOLD_FOR_ACCEPT_DISTANCE = 0.75f;
+  private int numOfRegistered = 0;
+  private TextView tvNumOfRegistered;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     fabAdd = findViewById(R.id.fab_add);
+    tvNumOfRegistered = findViewById(R.id.txt_num_of_face_register);
     fabAdd.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -200,6 +204,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     isRegistration = mode;
     if(!isRegistration) {
       fabAdd.setVisibility(View.INVISIBLE);
+      tvNumOfRegistered.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -346,14 +351,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                   return;
                 }
 
-                for (Face face : faces) {
-                  // Head is rotated to the right rotY degrees
-                  float rotY = face.getHeadEulerAngleY();
-                  // Head is tilted sideways rotZ degrees
-                  float rotZ = face.getHeadEulerAngleZ();
-                  Log.d("duong", "right: " + rotY + " z: " + rotZ);
-                }
-
                 // Big face filter
                 List<Face> bigFaces = new ArrayList<>();
 
@@ -364,6 +361,26 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     bigFaces.add(face);
                   }
                 }
+
+                for (Face face : bigFaces) {
+                  // Head is rotated to the right rotY degrees
+                  float rotY = face.getHeadEulerAngleY();
+                  // Head is tilted sideways rotZ degrees
+                  float rotZ = face.getHeadEulerAngleZ();
+                  float rotX = face.getHeadEulerAngleX();
+                  if (rotY > 20 || rotY < -20 || rotX > 20 || rotX < -20 || rotZ > 20 || rotZ < -20) {
+                    runOnUiThread(() -> {
+                      showFaceNotify("Chú ý không quá nghiêng mặt", Color.RED);
+                    });
+                  } else {
+                    runOnUiThread(() -> {
+                      showFaceNotify("Nhìn thẳng vào camera như vậy", Color.GREEN);
+                    });
+                  }
+
+                  Log.d("duong", "right: " + rotY + " z: " + rotZ + " x: " + rotX);
+                }
+
                 runInBackground(
                         new Runnable() {
                           @Override
@@ -494,15 +511,15 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     }
 
-//    runOnUiThread(
-//            new Runnable() {
-//              @Override
-//              public void run() {
+    runOnUiThread(
+            new Runnable() {
+              @Override
+              public void run() {
 //                showFrameInfo(previewWidth + "x" + previewHeight);
 //                showCropInfo(croppedBitmap.getWidth() + "x" + croppedBitmap.getHeight());
 //                showInference(lastProcessingTimeMs + "ms");
-//              }
-//            });
+              }
+            });
 
   }
 
@@ -736,8 +753,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
         loadingSpinner.dismissDialog();
         if (response.isSuccessful()) {
+          numOfRegistered++;
+          changeNumOfRegister(numOfRegistered);
           MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
-          successSpinner.startSuccessMakeARollCallDialog();
+          successSpinner.startSuccessMakeARollCallDialogNoFinish(numOfRegistered);
         } else {
           MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại");
           failSpinner.startErrorMakeARollCallDialog();
@@ -747,6 +766,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       @Override
       public void onFailure(Call<RegistrationResponse> call, Throwable t) {
         loadingSpinner.dismissDialog();
+        Toasty.error(DetectorActivity.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
       }
     });
   }
@@ -762,8 +782,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
         loadingSpinner.dismissDialog();
         if (response.isSuccessful()) {
+          numOfRegistered++;
+          changeNumOfRegister(numOfRegistered);
           MyCustomDialog successSpinner = new MyCustomDialog(DetectorActivity.this, "Đăng kí khuôn mặt thành công");
-          successSpinner.startSuccessMakeARollCallDialog();
+          successSpinner.startSuccessMakeARollCallDialogNoFinish(numOfRegistered);
         } else {
           MyCustomDialog failSpinner = new MyCustomDialog(DetectorActivity.this, "Có lỗi khi đăng kí khuôn mặt, thử lại");
           failSpinner.startErrorMakeARollCallDialog();
@@ -773,6 +795,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       @Override
       public void onFailure(Call<RegistrationResponse> call, Throwable t) {
         loadingSpinner.dismissDialog();
+        Toasty.error(DetectorActivity.this, "Lỗi ứng dụng, thử lại", Toast.LENGTH_SHORT, true).show();
       }
     });
   }

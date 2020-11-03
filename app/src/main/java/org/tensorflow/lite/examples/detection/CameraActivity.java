@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -96,6 +97,7 @@ public abstract class CameraActivity extends AppCompatActivity
 //  private ImageView plusImageView, minusImageView;
 //  private SwitchCompat apiSwitchCompat;
 //  private TextView threadsTextView;
+    private TextView txtFaceNotify, txtNumOfFaceRegister;
 
   private FloatingActionButton btnSwitchCam;
 
@@ -147,6 +149,8 @@ public abstract class CameraActivity extends AppCompatActivity
 //    gestureLayout = findViewById(R.id.gesture_layout);
 //    sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
 //    bottomSheetArrowImageView = findViewById(R.id.bottom_sheet_arrow);
+    txtFaceNotify = findViewById(R.id.txt_face_notify);
+    txtNumOfFaceRegister = findViewById(R.id.txt_num_of_face_register);
 
     btnSwitchCam = findViewById(R.id.fab_switchcam);
 
@@ -644,6 +648,25 @@ public abstract class CameraActivity extends AppCompatActivity
 //  protected void showInference(String inferenceTime) {
 //    inferenceTimeTextView.setText(inferenceTime);
 //  }
+
+    protected void showFaceNotify(String notify, int color) {
+      txtFaceNotify.setTextColor(color);
+      txtFaceNotify.setText(notify);
+    }
+
+    protected void changeNumOfRegister(int num) {
+      if (num == 1) {
+          txtNumOfFaceRegister.setText("Hoàn thành 1/3: Mặt hơi nghiêng phải");
+      }
+
+      if (num == 2) {
+          txtNumOfFaceRegister.setText("Hoàn thành 2/3: Mặt nhìn thẳng (quan trọng)");
+      }
+
+      if (num == 3) {
+          txtNumOfFaceRegister.setText("Hoàn thành đăng kí khuôn mặt");
+      }
+    }
 
   protected abstract void processImage();
 

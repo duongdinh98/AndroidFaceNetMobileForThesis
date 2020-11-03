@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import es.dmoral.toasty.Toasty;
 
 public class MyCustomDialog {
     private Activity activity;
@@ -85,6 +88,29 @@ public class MyCustomDialog {
         txtDialog.setText(text);
         btnOk.setOnClickListener(view -> {
             alertDialog.dismiss();
+        });
+
+        builder.setView(dialogLayout);
+        builder.setCancelable(false);
+
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void startSuccessMakeARollCallDialogNoFinish(int numOfRegistered) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.success_make_a_roll_call_dialog, null);
+
+        Button btnOk = dialogLayout.findViewById(R.id.btn_ok_dialog);
+        TextView txtDialog = dialogLayout.findViewById(R.id.txtDialog);
+        txtDialog.setText(text);
+        btnOk.setOnClickListener(view -> {
+            alertDialog.dismiss();
+            if(numOfRegistered == 3) {
+                Toasty.success(activity, "Hoàn tất quá trình đăng kí", Toast.LENGTH_SHORT, true).show();
+                activity.finish();
+            }
         });
 
         builder.setView(dialogLayout);
