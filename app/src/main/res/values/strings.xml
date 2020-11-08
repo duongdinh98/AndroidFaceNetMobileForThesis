@@ -8,6 +8,6 @@
     <string name="top_icon">haha</string>
     <string name="login_text">ĐĂNG NHẬP HỆ THỐNG</string>
     <string name="powered_by">Powered by</string>
-    <string name="register_txt">ĐĂNG KÍ KHUÔN MẶT MỚI</string>
+    <string name="register_txt">ĐĂNG KÝ KHUÔN MẶT MỚI</string>
     <string name="recog_txt">ĐIỂM DANH HỌC VIÊN</string>
 </resources>

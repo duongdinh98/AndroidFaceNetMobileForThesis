@@ -374,7 +374,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     });
                   } else {
                     runOnUiThread(() -> {
-                      showFaceNotify("Nhìn thẳng vào camera như vậy", Color.GREEN);
+                      showFaceNotify("Giữ nguyên và nhìn vào camera như vậy", Color.GREEN);
                     });
                   }
 

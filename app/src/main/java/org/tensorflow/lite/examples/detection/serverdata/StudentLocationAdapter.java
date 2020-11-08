@@ -47,7 +47,7 @@ public class StudentLocationAdapter extends RecyclerView.Adapter<StudentLocation
 
         holder.txtStudentName.setText(name);
         holder.txtPhoneNum.setText(phone);
-        holder.txtLocation.setText(location == null ? "Trống" : location);
+        holder.txtLocation.setText(location == null || location.equals("") ? "Trống" : location);
         holder.btnUpdate.setOnClickListener(view -> {
             Intent intent = new Intent(context, UpdateStudentLocation.class);
             intent.putExtra("id", id);
