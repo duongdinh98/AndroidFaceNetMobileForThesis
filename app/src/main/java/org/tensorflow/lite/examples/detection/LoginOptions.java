@@ -44,6 +44,7 @@ public class LoginOptions extends AppCompatActivity {
 
         logInAccount.setOnClickListener(view -> {
             Intent intent = new Intent(LoginOptions.this, Login.class);
+            intent.putExtra("login-from", "teacher");
             startActivity(intent);
             finish();
         });

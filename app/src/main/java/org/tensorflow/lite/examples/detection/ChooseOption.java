@@ -76,8 +76,14 @@ public class ChooseOption extends AppCompatActivity {
                     });
 
                     btn_register.setOnClickListener(view -> {
-                        Intent intent = new Intent(ChooseOption.this, QRResult.class);
-                        startActivity(intent);
+                        if(SaveDataSet.retrieveFromMyPrefs(ChooseOption.this, "jwt_admin").equals("")) {
+                            Intent intent = new Intent(ChooseOption.this, Login.class);
+                            intent.putExtra("login-from", "admin");
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(ChooseOption.this, QRResult.class);
+                            startActivity(intent);
+                        }
                     });
                 } else {
                     onFailCheckConnection();

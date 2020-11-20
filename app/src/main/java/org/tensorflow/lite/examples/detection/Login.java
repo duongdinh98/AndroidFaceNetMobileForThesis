@@ -28,6 +28,7 @@ import retrofit2.Retrofit;
 public class Login extends AppCompatActivity {
     Button btnLogin;
     EditText inputEmail, inputPassword;
+    String loginFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,9 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             login();
         });
+
+        Intent intent = getIntent();
+        loginFrom = intent.getStringExtra("login-from");
     }
 
     private void login() {
@@ -71,13 +75,19 @@ public class Login extends AppCompatActivity {
                         String role = response.body().getData().getUser().getRole();
                         String beLongTo = response.body().getData().getUser().getBeLongTo();
 
-                        if (!role.equals("teacher")) {
-                            Toasty.error(Login.this, "Phải đăng nhập bằng tài khoản giáo viên", Toast.LENGTH_SHORT, true).show();
+                        if ((role.equals("admin") && loginFrom.equals("teacher")) || (role.equals("staff") && loginFrom.equals("teacher")) || (role.equals("teacher") && loginFrom.equals("admin"))) {
+                            Toasty.error(Login.this, "Tài khoản này không có quyền hạn", Toast.LENGTH_SHORT, true).show();
                         } else {
-                            SaveDataSet.saveToken(Login.this, token, teacherName, beLongTo);
+                            if (loginFrom.equals("teacher")) {
+                                SaveDataSet.saveToken(Login.this, token, teacherName, beLongTo);
+                                Intent intent = new Intent(Login.this, Profile.class);
+                                startActivity(intent);
+                            } else {
+                                SaveDataSet.saveTokenAdmin(Login.this, token, teacherName, beLongTo);
+                                Intent intent = new Intent(Login.this, QRResult.class);
+                                startActivity(intent);
+                            }
                             Toasty.success(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT, true).show();
-                            Intent intent = new Intent(Login.this, Profile.class);
-                            startActivity(intent);
                             finish();
                         }
 

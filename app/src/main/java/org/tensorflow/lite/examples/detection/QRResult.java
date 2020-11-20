@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.detection;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +18,15 @@ import androidx.core.content.ContextCompat;
 import com.king.zxing.CaptureActivity;
 import com.king.zxing.Intents;
 
+import org.tensorflow.lite.examples.detection.tflite.SaveDataSet;
+
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
 
 public class QRResult extends AppCompatActivity {
     TextView idNewFace, cardName, cardInfo;
-    Button btnRegister;
+    Button btnRegister, btnLogoutAdmin;
     Switch aSwitch;
 
     @Override
@@ -38,14 +41,17 @@ public class QRResult extends AppCompatActivity {
 
         idNewFace = findViewById(R.id.idNewFace);
         btnRegister = findViewById(R.id.btn_start_register);
+        btnLogoutAdmin = findViewById(R.id.btn_logout_admin);
         cardName = findViewById(R.id.txt_card_name);
         cardInfo = findViewById(R.id.txt_card_info);
         aSwitch = findViewById(R.id.switch_register);
         aSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            btnRegister.setText( aSwitch.isChecked() ? "Đăng kí cho giảng viên" : "Đăng kí cho học viên" );
+            btnRegister.setText( aSwitch.isChecked() ? "Đăng ký cho giảng viên" : "Đăng ký cho học viên" );
             cardName.setText( aSwitch.isChecked() ? "Giảng viên mới" : "Học viên mới" );
             cardInfo.setText( aSwitch.isChecked() ? "Giảng viên mới" : "Học viên mới" );
         });
+
+        btnLogoutAdmin.setOnClickListener(view -> logout());
 
         startActivityForResult(new Intent(QRResult.this, CaptureActivity.class), 5360);
     }
@@ -72,5 +78,24 @@ public class QRResult extends AppCompatActivity {
                 Toasty.error(QRResult.this, "Mã QR không tồn tại, scan lại mã QR", Toast.LENGTH_SHORT, true).show();
             });
         }
+    }
+
+    public void logout () {
+        AlertDialog alertDialog = new AlertDialog.Builder(QRResult.this).create();
+        alertDialog.setMessage("Đăng xuất tài khoản khỏi thiết bị này");
+        alertDialog.setCancelable(true);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ĐĂNG XUẤT", (dialog, which) -> {
+            SaveDataSet.removeFromMyPrefs(QRResult.this, "jwt_admin");
+            SaveDataSet.removeFromMyPrefs(QRResult.this, "adminName");
+            SaveDataSet.removeFromMyPrefs(QRResult.this, "beLongToAdmin");
+            finish();
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "HỦY", (dialog, which) -> {
+            alertDialog.dismiss();
+        });
+
+        alertDialog.show();
     }
 }

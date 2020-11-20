@@ -130,11 +130,23 @@ public class SaveDataSet {
         SharedPreferences prefs;
         SharedPreferences.Editor edit;
         prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        edit=prefs.edit();
+        edit = prefs.edit();
 
         edit.putString("jwt", token);
         edit.putString("teacherName", username);
         edit.putString("beLongTo", beLongTo);
+        edit.apply();
+    }
+
+    public static void saveTokenAdmin (Context context, String token, String username, String beLongTo) {
+        SharedPreferences prefs;
+        SharedPreferences.Editor edit;
+        prefs = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        edit = prefs.edit();
+
+        edit.putString("jwt_admin", token);
+        edit.putString("adminName", username);
+        edit.putString("beLongToAdmin", beLongTo);
         edit.apply();
     }
 
