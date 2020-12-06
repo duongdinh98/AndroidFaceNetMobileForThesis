@@ -87,7 +87,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:background="@drawable/btn_blue"
+        android:background="@drawable/btn_blue_gradient"
         android:text="Check in"
         android:textColor="#ffffff"
         android:textSize="20sp"
